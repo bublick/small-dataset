@@ -1,0 +1,139 @@
+{{ define "main" }}
+
+{{ $t := debug.Timer "Single Bottler" }}
+{{ $bottler := .Params.bottler }}
+{{ $rums_of_bottler := dict }}        
+{{ $rums := dict }}
+
+{{ $rums = partialCached "cached_rums_with_db_id.html" . }}
+{{ range $rums }}
+    {{ if eq .basics_independentBottler_name $bottler }}
+        {{ $singleRum := dict "rxid" .rxid 
+                    "rumFilename" .rumFilename
+                    "id_databaseRumID" .id_databaseRumID
+                    "refs_imageURLs" .refs_imageURLs
+                    "rxid_number" .rxid_number 
+                    "basics_fullName" .basics_fullName
+                    "basics_shortName" .basics_shortName
+                    "basics_title" .basics_title
+                    "basics_description" .basics_description
+                    "title" .title
+                    "country_code" .country_code 
+                    "ratingsCount" .ratingsCount
+                    "ratingsMedian" .ratingsMedian 
+                    "rum_count" .rum_count 
+                    "review_short" .review_short
+                    "reviews_len" .reviews_len
+                    "top_review_comment" .top_review_comment
+                    "top_review_username" .top_review_username
+
+                    "url" .url
+        }}
+        {{ $rums_of_bottler = merge $rums_of_bottler (dict (string .rxid) $singleRum) }}
+    {{ end }}
+{{ end }}
+{{ $rums_of_bottler = sort $rums_of_bottler "basics_fullName" "asc" }}
+
+<article>
+    <div class="container mb-5 mt-3">
+        <nav class="breadcrumb">
+            <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a class="main-link" itemprop="item" href="/"><span itemprop="name">Home</span></a>
+                    <meta itemprop="position" content="1">
+                </li>
+                <li class="breadcrumb-arrow">›</li>
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a class="main-link" itemprop="item" href="/bottlers/"><span itemprop="name">Independent bottlers</span></a>
+                    <meta itemprop="position" content="2">
+                </li>
+                <li class="breadcrumb-arrow">›</li>
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <p class="text-block"><span itemprop="name">{{ .Params.bottler }}</span></p>
+                    <meta itemprop="position" content="3">
+                </li>
+            </ol>
+        </nav>
+
+        <h1 class="mt-3">{{ .Params.bottler }}</h1>
+        <p class="text-block mb-1">There are <b>{{ lang.FormatNumberCustom 0 (len $rums) }} rums</b> from {{ .Params.bottler }} in the RumX database.</p>
+        <a class="btn btn-secondary" href={{ printf "/search/?q=%s" .Params.bottler }}>Show all rums from {{ .Params.bottler }}</a>
+
+        {{ $top_rums_heading := printf "Top rated rums from %s" .Params.bottler }}
+        {{ partial "top_rated_list_in_countries_dict.html" (dict "rums" $rums_of_bottler "heading" $top_rums_heading) }}
+
+        <div class="row mt-3">
+            {{ if ge .Params.ratings.ratingsCount  0 }}
+            <div class="col-12 col-md-6 my-3">
+                <div class="detail-margin">
+                    <h2>Community reviews of {{ .Params.bottler }}</h2>
+                    {{ partial "rating_overall.html" (dict "ctx" .Params "includeRatingItemprops" true) }}
+                    {{ partial "rating_barchart.html" . }}
+                </div>  
+            </div>
+            {{ end }}
+            
+            {{ if ge (len .Params.popular_distilleries) 0 }}
+            <hr class="hr mt-5" />
+            <div class="distillery-country-list col-12 col-md-6 my-3">
+                <h2>Most bottled distilleries by {{ .Params.bottler }}</h2>
+                <ul class="mb-0">
+                    {{ $distilleries := .Params.popular_distilleries }}
+                    {{ $distilleries_by_count := sort .Params.popular_distilleries "rums" "desc"  }}
+
+                    {{ range $index, $bottler := $distilleries }}
+                        {{ if lt $index site.Params.rumx.distillery_or_bottler_preview_count }}
+                        <li class="arrow-li">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+                            </svg>
+                            {{ $path_to_bottler := printf "/distilleries/%s" $bottler.path }}
+                            <a href={{ $path_to_bottler }}>{{ $bottler.name }}</a> <span class="count-badge badge badge-pill">{{ $bottler.rums }} {{ if eq $bottler.rums 1 }} rum {{ else }} rums {{ end }}</span>
+                        </li>
+                        {{ end }}
+                    {{ end }}
+
+                    {{ range $index, $bottler := $distilleries }}
+                        {{ if ge $index site.Params.rumx.distillery_or_bottler_preview_count }}
+                        <li class="further-links-li arrow-li" style="display:none;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+                            </svg> 
+                            {{ $path_to_bottler := printf "/bottlers/%s" $bottler.path }}
+                            <a href={{ $path_to_bottler }}>{{ $bottler.name }}</a> <span class="count-badge badge badge-pill">{{ $bottler.rums }} {{ if eq $bottler.rums 1 }} rum {{ else }} rums {{ end }}</span>
+                        </li>
+                        {{ end }}
+                    {{ end }}
+                </ul>
+                {{ if ge (len $distilleries) site.Params.rumx.distillery_or_bottler_preview_count }}
+                <button id="further-links-show-more-button" type="button" class="btn btn-link">Show all</button>
+                {{ end }}
+            </div>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <script>
+                $('#further-links-show-more-button').click(function () {
+                    $(".further-links-li").css("display", "block");;
+                    $("#further-links-show-more-button").css("display", "none");
+                });
+            </script>
+            {{ end }}
+        </div>
+
+        {{ partial "forum_topics.html" (dict "search" .Params.bottler) }}
+
+        {{ $all_rums_by_heading := printf "All rums bottled by %s" .Params.bottler }}
+        {{ partial "all_rums_by.html" (dict "all_rums" $rums_of_bottler "heading" $all_rums_by_heading) }}
+
+        <div class="info-section container text-center">
+            <p class="h4 text-uppercase text-color-secondary">Dive Deeper into {{ .Params.bottler }} with RumX</p>
+    
+            <p class="text-block">Are you a {{ .Params.bottler }} enthusiast? Experience {{ .Params.bottler }} rums like never before, with a wealth of <b>detailed information</b>, <b>community reviews</b>, and <b>personalized recommendations</b> — only on the RumX app.</p>
+            
+            <a class="intro-button-download-app-store" href="{{ site.Params.rumx.app_store_url }}"><img class="dl-image" src="/assets/images/download-app-store.webp" alt="Download app on app store"></a>
+            <a class="intro-button-download-google-play" href="{{ site.Params.rumx.google_play_url }}"><img class="dl-image" src="/assets/images/download-google-play.webp" alt="Download app on google play"></a>
+        </div>
+    </div>
+</article>
+{{ $t.Stop }}
+{{ end }}

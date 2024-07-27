@@ -1,0 +1,16 @@
+<div class="row">
+
+    {{ $item_count := len .component.items }}
+    {{ $col_size := math.Round (math.Div 12 $item_count) }}
+    
+    {{ range $item := .component.items }}
+    <div class="col-12 col-sm-12 col-md-{{ $col_size }} col-lg-{{ $col_size }}">
+        <div class="text-start px-1">
+            <div class="card-body text-center">
+                <p class="h3 mb-1">{{ $item.value }}</p>
+                <p class="h4 text-muted">{{ $item.title }}</p>
+            </div>
+        </div>
+    </div>
+    {{ end }}
+</div>

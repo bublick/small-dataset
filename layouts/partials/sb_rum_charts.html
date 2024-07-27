@@ -1,0 +1,22 @@
+<div class="row">
+    {{ $index := 1 }}
+    {{ range $chart_item := .component.rums }}
+        {{ $rxid := add (cast.ToInt $chart_item.rxid) 0 }}
+
+        {{ $rumFileName := printf "RX%d" $rxid }}
+        {{ $rumPage := site.GetPage (printf "/rums/%s" $rumFileName) }}
+
+        {{ $bulkNum := 111 }}
+
+        {{ if $rumPage}}
+            {{ partial "rum_item.html" (dict "rum" $rumPage "chart_position" $index "custom_rating_median" $bulkNum "custom_rating_count" $bulkNum) }}
+            {{ $index = add $index 1 }}
+        {{ end }}
+
+        <!-- {%- assign lineup_rum = site.rums | find: "rxid_number", rxid -%}
+        {%- if lineup_rum -%}
+        {%- include_cached rum_item.html rum=lineup_rum chart_position=index custom_rating_median=chart_item.custom_median custom_rating_count=chart_item.custom_count -%}
+        {%- assign index = index | plus: 1 -%}
+        {%- endif -%} -->
+    {{ end }}
+</div>

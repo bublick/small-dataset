@@ -1,0 +1,44 @@
+<div {{ if .highlight }} class="highlighted-area"{{ end }}>
+    <!-- {{ .blok }} -->
+
+    {{ range index .blok "content" }}
+        {{if eq .type "paragraph"}}
+            {{ with .content }}
+                <p class="text-block">
+                    {{ partial "sb_rich_text_paragraph.html" (dict "blok" . "ignoreP" "true" ) }}
+                </p>
+            {{ end }}
+        {{ else if eq .type "heading"}}
+            {{$headingLevel := .attrs.level}}
+            {{ if eq $headingLevel 2 }}
+                <h2 class="mt-5">{{ (index .content 0).text }}</h2>
+            {{ else }}
+                <h3 class="mt-3">{{ (index .content 0).text }}</h3>
+            {{ end }}
+        {{ else if eq .type "ordered_list" }}
+            <ol class="list-group list-group-numbered">
+                {{ range .content }}
+                {{with (index .content 0)}}
+                <li class="list-group-item">
+                    {{ partial "sb_rich_text_paragraph.html" (dict "blok" (index . "content") "ignoreP" true ) }}
+                    <!-- {% include sb_rich_text_paragraph.html blok=olItem.content.first ignoreP="true" %} -->
+                </li>
+                {{ end }}
+            {{ end }}
+            </ol>
+        {{ else if eq .type "bullet_list" }}
+            <ul>
+                {{ range .content }}
+                    {{with (index .content 0)}}
+                    <li>
+                        {{ partial "sb_rich_text_paragraph.html" (dict "blok" (index . "content") "ignoreP" "true" ) }}
+                        <!-- {% include sb_rich_text_paragraph.html blok=olItem.content.first ignoreP="true" %} -->
+                    </li>
+                    {{ end }}
+                {{ end }}
+            </ul>
+        {{end}}
+    {{ end }}
+
+  
+        </div>

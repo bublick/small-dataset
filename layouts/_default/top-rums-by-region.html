@@ -1,0 +1,86 @@
+{{/* $top_countries_count := 20 */}}
+{{ define "main" }}
+<article>
+    <div class="container mt-3">
+        <nav class="breadcrumb">
+            <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a class="main-link" itemprop="item" href="/"><span itemprop="name">Home</span></a>
+                    <meta itemprop="position" content="1">
+                </li>
+                <li class="breadcrumb-arrow">›</li>
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <p class="text-block"><span itemprop="name">Top rated rums</span></p>
+                    <meta itemprop="position" content="2">
+                </li>
+            </ol>
+        </nav>
+
+        <h1 class="base-headline">Discover top rated rums by country</h1>
+    </div>
+
+    <div class="container">
+
+        <p class="text-block">Welcome to your <b>one-stop guide to the world's best rums by region</b>. From the complex flavors of <b>Jamaican rums</b> to the smooth blends of <b>Barbadian delights</b>, this curated list is a sneak peek into the RumX universe. But the full adventure? That awaits you in our RumX Mobile App, where you can delve deeper, read reviews, and even leave your own notes. So start here to explore the crème de la crème of rums from around the globe and <b>get ready to unlock the ultimate rum experience in our app</b>. Your global rum journey begins now!</p>
+
+        <a class="intro-button-download-app-store" href="{{ .Site.Params.rumx.app_store_url }}"><img class="dl-image" src="/assets/images/download-app-store.webp" alt="Download app on app store" loading="lazy"></a>
+        <a class="intro-button-download-google-play" href="{{ .Site.Params.rumx.google_play_url }}"><img class="dl-image" src="/assets/images/download-google-play.webp" alt="Download app on google play" loading="lazy"></a>        
+
+        <div class="accordion mt-5" id="accordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="AllCountriesHeading">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#allCountriesBody" aria-expanded="true" aria-controls="allCountriesBody">
+                        All countries
+                    </button>
+                </h2>
+                <div id="allCountriesBody" class="accordion-collapse collapse show" aria-labelledby="AllCountriesHeading" data-bs-parent="#accordion">
+                    <div class="accordion-body">
+                        {{ $top_rated_rums_all := dict }}
+                        
+                        <div class="row">
+
+                            {{ $top_rated_rums_all := dict }}
+                            {{ $top_rated_rums_all = partialCached "cached_rums_with_db_id.html" . }}
+
+                            {{ $sorted_top_rated_rums_all := sort $top_rated_rums_all "ratingsMedian" "desc" }}
+                            {{ range $index, $rum := $sorted_top_rated_rums_all }}
+                                {{ if lt $index $.Site.Params.rumx.top_rums_count }}
+                                    {{ partial "rum_item_from_dict.html" (dict "rum" . "show_top_comment" false) $rum.rxid "without_top_comment"  }}
+                                {{ end }}
+                            {{ end }}
+                            {{ partialCached "download.html" . }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ $all_countries := partialCached "cached_countries_with_db_id.html" . }}
+
+            {{ range $country := $all_countries }}
+                {{ with $country}}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="{{ .clean_name }}Heading">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ .clean_name }}" aria-expanded="false" aria-controls="{{ .clean_name }}">
+                                {{ .country_name }}
+                            </button>
+                        </h2>
+                        <div id="{{ .clean_name }}" class="accordion-collapse collapse" aria-labelledby="{{ .clean_name }}Heading" data-bs-parent="#accordion">
+                            <div class="accordion-body">
+                                
+                                <div class="row">
+                                    {{ $rums := partialCached "cached_rums_with_db_id.html" . }}
+                                    {{ range $rums }}
+                                        {{ if eq .country_code $country.code }}
+                                            {{ partial "rum_item_from_dict.html" (dict "rum" . "show_top_comment" false) .rxid "without_top_comment"  }}
+                                        {{ end }}
+                                    {{ end }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {{end}}
+            {{ end }}
+            
+        </div>
+    </div>
+</article>
+{{ end }}

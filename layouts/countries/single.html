@@ -1,0 +1,158 @@
+{{ define "main" }}
+{{ $t := debug.Timer "Single Country" }}
+<article>
+    <div class="container mt-3">
+        <nav class="breadcrumb">
+            <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a class="main-link" itemprop="item" href="/"><span itemprop="name">Home</span></a>
+                    <meta itemprop="position" content="1">
+                </li>
+                <li class="breadcrumb-arrow">›</li>
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a class="main-link" itemprop="item" href={{ "/countries/" }}><span itemprop="name">Countries</span></a>
+                    <meta itemprop="position" content="2">
+                </li>
+                <li class="breadcrumb-arrow">›</li>
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <p class="text-block"><span itemprop="name">{{ .Params.country_name }}</span></p>
+                    <meta itemprop="position" content="3">
+                </li>
+            </ol>
+        </nav>
+
+        <h1 class="mt-3">{{ .Params.country_name }}</h1>
+
+        <div class="row">
+            <div class="col-12 col-md-6 mt-2">
+                <p class="text-block mb-1">There are <b>{{ lang.FormatNumberCustom 0 .Params.rum_count | default 0 }} rums</b> from {{ .Params.country_name }} in the RumX database.</p>
+                <a class="btn btn-secondary" href={{ printf "/search/?q=%s" .Params.country_name }}>Show all {{ .Params.country_name }} rums</a>
+            </div>
+
+            {{ if .Params.editorial }}
+            <div class="col-12 col-md-6 mt-2">
+                <div class="description-read-more" style="--line-clamp: 3">
+                    <input id="description-read-more-checkbox" type="checkbox" class="description-read-more__checkbox" aria-hidden="true">
+                    <p class="description-read-more__text text-block mb-1">{{ .Params.editorial.text }}</p>
+                    <label for="description-read-more-checkbox" class="description-read-more__label main-link" data-read-more="Read more" data-read-less="See less" aria-hidden="true"></label>
+                </div>
+            </div>
+            {{ end }}
+        </div>
+
+        {{ $top_rums_heading := printf "Top rated %s rums" .Params.country_name }}
+        {{ $country_code := .Params.code }}
+        
+        {{ $rums := dict }}
+        {{ $rums = partialCached "cached_rums_with_db_id.html" . }}
+
+        {{ $countryRums := dict }}
+        {{ range $rums }}
+            {{ if eq .country_code $country_code }}
+                {{ $singleRum := dict "rxid" .rxid 
+                                        "rumFilename" .rumFilename
+                                        "id_databaseRumID" .id_databaseRumID
+                                        "refs_imageURLs" .refs_imageURLs
+                                        "rxid_number" .rxid_number 
+                                        "basics_fullName" .basics_fullName
+                                        "basics_shortName" .basics_shortName
+                                        "basics_title" .basics_title
+                                        "basics_description" .basics_description
+                                        "title" .title
+                                        "country_code" .country_code 
+                                        "ratingsCount" .ratingsCount
+                                        "ratingsMedian" .ratingsMedian 
+                                        "rum_count" .rum_count 
+                                        "review_short" .review_short
+                                        "reviews_len" .reviews_len
+                                        "top_review_comment" .top_review_comment
+                                        "top_review_username" .top_review_username
+
+                                        "url" .url
+                }}
+                {{ $countryRums = merge $countryRums (dict (string .rxid) $singleRum) }}
+            {{ end }}
+        {{ end }}
+        {{ partial "top_rated_list_in_countries_dict.html" (dict "rums" $countryRums "heading" $top_rums_heading) }}
+
+        {{ if gt .Params.ratings.ratingsCount 0 }}
+        <hr class="hr mt-5" />
+        <div class="row">
+            <div class="col-12 col-lg-4">
+                <div class="detail-margin mb-3">
+                    {{ partial "rating_overall.html" (dict "ctx" .Params "includeRatingItemprops" true) }}
+                    {{ partial "rating_barchart.html" . }}
+                </div>
+            </div>
+            <div class="col-12 col-lg-8">
+                <div class="detail-margin">
+                    <h2>Flavour profile of {{ .Params.country_name }}</h2>
+                    <h3>Most frequently mentioned flavors</h3>
+                    {{ partial "rating_overview.html" . }}
+                </div>
+            </div>
+        </div>
+        {{ end }}
+
+        {{ partial "forum_topics.html" (dict "search" .Params.country_name) }}
+
+        {{ if gt (len .Params.popular_distilleries) 0 }}
+        <hr class="hr mt-5" />
+        <div class="distillery-country-list">
+            <h2>Popular distilleries of {{ .Params.country_name }}</h2>
+            {{ $distilleries := .Params.popular_distilleries }}
+            <ul class="mb-0">
+                {{ range $index, $distillery := $distilleries }}
+                    {{ if lt $index site.Params.rumx.distillery_or_bottler_preview_count }}
+                    <li class="arrow-li">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+                        </svg>
+                        {{ $path_to_distillery := printf "/distilleries/%s" $distillery.path }}
+                        <a href={{ $path_to_distillery }}>{{ $distillery.name }}</a> <span class="count-badge badge badge-pill">{{ $distillery.rums }} {{ if eq $distillery.rums 1 }} rum {{ else }} rums {{ end }}</span>
+                    </li>
+                    {{ end }}
+                {{ end }}
+                
+                {{ range $index, $distillery := $distilleries }}
+                    {{ if ge $index site.Params.rumx.distillery_or_bottler_preview_count }}
+                    <li class="further-links-li arrow-li" style="display:none;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+                        </svg>
+                        {{ $path_to_distillery := printf "/distillery/%s" $distillery.path }}
+                        <a href={{ $path_to_distillery }}>{{ $distillery.name }}</a> <span class="count-badge badge badge-pill">{{ $distillery.rums }} {{ if eq $distillery.rums 1 }} rum {{ else }} rums {{ end }}</span>
+                    </li>
+                    {{ end }}
+                {{ end }}
+                <!-- {% endfor %} -->
+            </ul>
+            <!-- {% if distilleries.size > site.rumx.distillery_or_bottler_preview_count %} -->
+            <button id="further-links-show-more-button" type="button" class="btn btn-link">Show all</button>
+            <!-- {% endif %} -->
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <script>
+                $('#further-links-show-more-button').click(function () {
+                    $(".further-links-li").css("display", "block");;
+                    $("#further-links-show-more-button").css("display", "none");
+                });
+            </script>
+        </div>
+        {{ end }}
+
+        {{ $all_rums_by_heading := printf "All rums from %s" .Params.country_name }}
+        {{ partial "all_rums_by.html" (dict "all_rums" $rums "heading" $all_rums_by_heading) }}
+
+        <div class="info-section container text-center">
+            <p class="h4 text-uppercase text-color-secondary">Unlock the Full RumX Experience</p>
+    
+            <p class="text-block">Love rums from {{ .Params.country_name }}? The journey doesn't stop here. Download the RumX app to explore an even more extensive selection of rums from {{ .Params.country_name }} and around the world. With features like <b>collection management</b>, <b>personalized recommendations</b>, <b>tasting notes</b>, and a bustling <b>community of rum enthusiasts</b>, our free app offers the ultimate rum experience, right in your pocket.</p>
+            
+            <a class="intro-button-download-app-store" href="{{ .Site.Params.rumx.app_store_url }}"><img class="dl-image" src="/assets/images/download-app-store.webp" alt="Download app on app store"></a>
+            <a class="intro-button-download-google-play" href="{{ .Site.Params.rumx.google_play_url }}"><img class="dl-image" src="/assets/images/download-google-play.webp" alt="Download app on google play"></a>
+        </div>
+    </div>
+</article>
+{{ $t.Stop }}
+{{ end }}

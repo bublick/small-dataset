@@ -1,0 +1,38 @@
+{{ if gt (len .Params.ratings.nosingTagsFrequency) 0 }}
+<div class="row mb-2">
+  <div class="col-3 col-md-2 col-xl-1 align-self-center"><h4>Aroma</h4></div>
+  <div class="col-9 col-md-10 col-xl-11 tags-grid">
+    {{ range $index, $tag := .Params.ratings.nosingTagsFrequency }}
+      {{ if lt $index site.Params.rumx.maximum_tags_count }}
+        <span class="taste-badge badge badge-pill" style="border-color:#{{ (index $tag 0).category.bgColor }}; color:#{{ (index $tag 0).category.bgColor }} ">{{ (index $tag 0).en }}</span>
+      {{ end }}
+    {{ end }}
+  </div>
+</div>
+{{ end}}
+
+{{ if gt (len .Params.ratings.tasteTagsFrequency) 0 }}
+<div class="row mb-2">
+  <div class="col-3 col-md-2 col-xl-1 align-self-center"><h4>Taste</h4></div>
+  <div class="col-9 col-md-10 col-xl-11 tags-grid">
+    {{ range $index, $tag := .Params.ratings.tasteTagsFrequency }}
+      {{ if lt $index site.Params.rumx.maximum_tags_count }}
+        <span class="taste-badge badge badge-pill" style="border-color:#{{ (index $tag 0).category.bgColor }}; color:#{{ (index $tag 0).category.bgColor }}">{{ (index $tag 0).en }}</span>
+      {{ end }}
+    {{ end }}
+  </div>
+</div>
+{{ end }}
+
+{{ if gt (len .Params.ratings.finishTagsFrequency) 0 }}
+<div class="row mb-2">
+  <div class="col-3 col-md-2 col-xl-1 align-self-center"><h4>Finish</h4></div>
+  <div class="col-9 col-md-10 col-xl-11 tags-grid">
+    {{ range $index, $tag := .Params.ratings.finishTagsFrequency }}
+      {{ if lt $index site.Params.rumx.maximum_tags_count }}
+        <span class="taste-badge badge badge-pill" style="border-color:#{{ (index $tag 0).category.bgColor }}; color:#{{ (index $tag 0).category.bgColor }}">{{ (index $tag 0).en }}</span>
+      {{ end }}
+    {{ end }}
+  </div>
+</div>
+{{ end }}

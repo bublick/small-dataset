@@ -1,0 +1,44 @@
+[
+    {
+        "username": "Johannes Büchs",
+        "title": "Great app",
+        "text": "Very extensive information and possibilities.",
+        "date": "02.05.2022",
+        "stars": 5
+    },
+    {
+        "username": "AHFHenry",
+        "title": "Great app!",
+        "text": "Super helpful and well done!",
+        "date": "28.03.2022",
+        "stars": 5
+    },
+    {
+        "username": "Tommy Michaelsen",
+        "title": "Cool app!",
+        "text": "Really cool app to keep track of what you have tasted and what you have in stock.",
+        "date": "11.03.2022",
+        "stars": 5
+    },
+    {
+        "username": "LOlodu27",
+        "title": "RumX",
+        "text": "Very good free application for rum lovers. I use this app regularly to buy bottles.",
+        "date": "15.02.2022",
+        "stars": 5
+    },
+    {
+        "username": "MaxJensen",
+        "title": "Fantastic app!",
+        "text": "So, if you’re into rum, this app is a must-have! Big thanks!!",
+        "date": "08.02.2022",
+        "stars": 5
+    },
+    {
+        "username": "Christelle Lille",
+        "title": "Very intuitive!",
+        "text": "To follow your stock, find your next rum... See the evaluations of others...",
+        "date": "07.12.2021",
+        "stars": 5
+    }
+]

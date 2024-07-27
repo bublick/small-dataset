@@ -1,0 +1,80 @@
+{{ define "main" }}
+
+<div class="wrapper">
+
+<article>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-12">
+            <nav class="breadcrumb">
+                <ol itemscope="" itemtype="https://schema.org/BreadcrumbList">
+                    <li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem">
+                        <a class="main-link" itemprop="item" href="/"><span itemprop="name">Home</span></a>
+                        <meta itemprop="position" content="1">
+                    </li>
+                    <li class="breadcrumb-arrow">›</li>
+                    <li itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem">
+                        <p class="text-block"><span itemprop="name">Search</span></p>
+                        <meta itemprop="position" content="2">
+                    </li>
+                </ol>
+            </nav>
+
+            <h1 class="mt-3">Search</h1>
+
+            
+            <p class="text-block">From timeless classics to exclusive single casks, <b>discover over 20,000+ rums</b> in the world's largest rum database. Start Searching!</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="mb-3">
+            <form id="search-form" role="search">
+                <input id="search-input" type="search" autofocus="" class="form-control" autocomplete="off" placeholder="Search 20,366 rums...">
+            </form>
+        </div>
+        <div id="search-setup-loader" class="text-center" style="">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="results-container" class="row" style="display: none;">
+
+        {{ $rums := dict }}
+        {{ $rums := partialCached "cached_rums_with_db_id.html" . }}
+
+        {{$sorted_default_search_rums := sort $rums "rxid_number" "asc" }}
+        {{ range $index, $rum := $sorted_default_search_rums }}
+            {{ if lt $index $.Site.Params.rumx.search_default_rums_count }}
+                {{ partial "rum_item_from_dict.html" (dict "rum" $rum "show_top_comment" false) $rum.rxid "without_top_comment"   }}
+            {{ end }}
+        {{ end }}
+    </div>
+</div>
+
+<script type="text/javascript">
+    // hide  #search-setup-loader and show #results-container in 1 second
+    setTimeout(function() {
+        document.getElementById('search-setup-loader').style.display = 'none';
+        document.getElementById('results-container').style.display = 'flex';
+    }, 1000);
+</script>
+
+
+<script src="/custom-search.js"></script>
+
+<div class="info-section container text-center mt-10">
+    <p class="h4 text-uppercase text-color-secondary">Level Up with the RumX App</p>
+
+    <p class="text-block">You're currently exploring the world's largest rum database, and that's just a taste of what RumX has to offer. For the ultimate rum discovery experience, download our free iOS or Android app. Enjoy <b>smoother searches</b>, <b>more rum reviews</b>, <b>collection management</b> and <b>personalized recommendations</b> — right in the palm of your hand.</p>
+    
+    <a class="intro-button-download-app-store" href="https://apps.apple.com/de/app/rumx/id1438963909"><img class="dl-image" src="/assets/images/download-app-store.webp" alt="Download app on app store"></a>
+    <a class="intro-button-download-google-play" href="https://play.google.com/store/apps/details?id=com.rumtastingnotes.android"><img class="dl-image" src="/assets/images/download-google-play.webp" alt="Download app on google play"></a>
+</div>
+</article>
+
+</div>
+
+{{ end }}

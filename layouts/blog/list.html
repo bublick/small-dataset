@@ -1,0 +1,87 @@
+{{ define "main" }}
+<article>
+  <div class="container mt-3">
+      <nav class="breadcrumb">
+          <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+              <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                  <a class="main-link" itemprop="item" href="/"><span itemprop="name">Home</span></a>
+                  <meta itemprop="position" content="1">
+              </li>
+              <li class="breadcrumb-arrow">›</li>
+              <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                  <p class="text-block"><span itemprop="name">Blog articles</span></p>
+                  <meta itemprop="position" content="2">
+              </li>
+          </ol>
+      </nav>
+  </div>
+
+  <div class="container">
+      <h1 class="base-headline">Discover our blog articles</h1>
+
+      <p class="text-block">Welcome to the RumX Blog, your go-to source for everything rum-related! From the intricacies of rum-making and the history of this rich spirit to reviews, recommendations, and cocktail recipes, we cover it all. Our aim is to enrich your rum experience, backed by insights from the world's largest rum database. Dive in to discover the latest trends, get expert advice, and expand your knowledge of the fascinating world of rum. Happy reading!</p>
+
+      <div class="row">
+          {{ $posts := dict }}
+
+          {{ range $story := .Pages.ByDate.Reverse }}
+            {{ $t := time.Now | time.Format "2 Jan 2006"}}
+            {{ $created_at := ""}}
+            {{ if .Params.created_at }}
+                {{ $created_at = .Params.created_at }}
+                {{ $created_at = time.AsTime $created_at }}
+                {{ $t = $created_at.Format "2 Jan 2006" }}
+            {{ end }}
+            
+            {{$layout := ""}}
+            {{$title := ""}}
+            {{$description := ""}}
+            {{$img_filename := ""}}
+            {{$img_alt := ""}}
+
+            {{ if .Params.layout }}
+              {{$layout = .Params.layout}}
+            {{ end }}
+            
+            {{ if eq $layout "old_blog_post"}}
+              {{$title = $story.Title}}
+              {{$description = $story.Params.description}}
+              {{$img_filename = $story.Params.thumbnail}}
+              {{$img_alt = "Blog post header image"}}
+            {{ else }}
+              {{$title = $story.Params.content_title}}
+              {{$description = $story.Params.content.description}}
+              {{$img_filename = $story.Params.content.thumbnail_image.filename}}
+              {{$img_alt = $story.Params.content.thumbnail_image.alt}}
+            {{ end}}
+
+            {{ $singlePost := dict "layout" $layout "title" $title "description" $description "permalink" $story.Permalink "created_at" $created_at "t" $t "img_filename" $img_filename "img_alt" $img_alt }}
+            {{ $posts = merge $posts (dict (string (len $posts)) $singlePost) }}
+          {{ end }}
+
+          {{ $posts := sort $posts "created_at" "desc" }}
+          
+          {{ range $index, $story := $posts }}
+          <div class="col-12 col-md-6 col-lg-4">
+              <div class="card m-1">
+                  {{$story.timestamp}}
+                  <img class="card-img-caroni" src="{{ $story.img_filename }}" alt="{{ $story.img_alt }}">
+                  <div class="card-body">
+                      <h4 class="card-title">{{ $story.title }}</h4>
+
+                      <p class="text-muted">{{ $story.t }}</p>
+
+                      <p class="card-text">{{ $story.description }}</p>
+                      {{ $url := $story.permalink }}
+                      <a href={{ $url | safeURL }} class="btn btn-primary">Read</a>
+                  </div>
+                  <a href={{ $url | safeURL }} class="stretched-link"></a>
+              </div>
+          </div>
+          {{ end }}
+
+          
+      </div>
+  </div>
+</article>
+{{ end }}

@@ -1,0 +1,23 @@
+{{ $path_to_country := printf "/countries/%s/" .Params.distillery.country.path }}
+
+<hr class="hr mt-5" />
+
+{{ $ratingMedian := math.Div (float .distillery.ratings.ratingsMedian) 10.0 }}
+{{ $distillery := .distillery}}
+<div class="about-distillery detail-margin">
+    <h2>About the {{ .Params.distillery.distillery }} distillery</h2>
+    <p class="text-block">The <a class="main-link" href={{ .distillery.permalink }}>{{ .distillery.distillery }}</a> distillery is located in 
+        <a class="main-link" href={{ $path_to_country }}>{{ .distillery.country.en }}</a>. Rums from <a class="main-link" href={{.distillery.permalink }}>{{ .distillery.distillery }}</a> have been reviewed <b>{{ lang.FormatNumberCustom 0 .distillery.ratings.ratingsCount }}</b> times with an average of <b>{{ printf "%.1f" $ratingMedian }}</b>/10.</p>
+
+    {{ with site.Data.distilleries }}
+        {{ range $key, $value:= .}}
+            {{ if eq $distillery.distillery  $key}}
+
+                {{ $latitude := $value.latitude }}
+                {{ $longitude := $value.longitude }}
+                <iframe title="Google maps location of the distillery" height="340" style="width: 100%; border:0" loading="lazy" allowfullscreen src="https://www.google.com/maps/embed/v1/place?key=AIzaSyADtn0hwXlzQaF7B7pX28bmg1SL_npzmXQ&q={{- $latitude -}},{{- $longitude -}}&zoom=8"></iframe>
+            {{ end }}
+        {{ end }}
+
+        {{ end }}
+  </div>

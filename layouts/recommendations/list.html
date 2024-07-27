@@ -1,0 +1,70 @@
+{{ define "main" }}
+<article>
+    <div class="container recommendations mt-3">
+        <div class="row">
+            <div class="col-12">
+                <nav class="breadcrumb">
+                    <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+                        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                            <a class="main-link" itemprop="item" href="/"><span itemprop="name">Home</span></a>
+                            <meta itemprop="position" content="1">
+                        </li>
+                        <li class="breadcrumb-arrow">›</li>
+                        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                            <p class="text-block"><span itemprop="name">{{ .Title }}</span></p>
+                            <meta itemprop="position" content="2">
+                        </li>
+                    </ol>
+                </nav>
+
+                <h1 class="mt-3">{{ .Title }}</h1>
+                <p class="text-block">Our editorial team has collected exciting recommendations for you. This list is regularly updated and expanded with new discoveries. Have fun exploring!</p>
+            </div>
+        </div>        
+        {{ range $category := .Site.Data.recommendation_categories }}
+        <h2 class="mt-5">{{ $category.title }}</h2>
+            {{$recommendationList := dict}}
+            {{$index := 0}}
+            {{ range $recommendationFile := readDir "content/recommendation" }}
+                {{with $recommendationFile}}
+                    {{ $recommendationFileName := .Name}}
+                    {{ $recommendation_file_type_arr := split $recommendationFileName "." }}
+                    {{ $recommendation_file_name := index $recommendation_file_type_arr 0}}
+                    {{ $recommendation_file_ext := index $recommendation_file_type_arr 1 }}
+                    {{ if and (eq $recommendation_file_ext "md") (ne $recommendation_file_name "_index") }}
+                        {{ $recommendationPage := $.GetPage (printf "/recommendation/%s" $recommendationFileName) }}
+                        {{ with $recommendationPage }}
+                            {{if eq .Params.list_category $category.id}}
+                                {{$index = add $index 1}}
+                                {{ $recommendation := dict "title" .Title "description" .Params.description "url" .Permalink }}
+                                {{ $recommendationList = merge $recommendationList (dict (string $index) $recommendation) }}
+                            {{ end }}
+                        {{ end }}
+                    {{ end }}
+                {{ end }}
+            {{ end }}
+            <div class="row">
+                {{ range $recommendationIndex, $recommendation := $recommendationList }}
+                <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+                    <a class="card my-3" href={{ $recommendation.url }}>
+                        <div class="card-body">
+                            <h3 class="card-title">{{ $recommendation.title }}</h3>
+                            <div class="card-subtitle text-block my-3">
+                                {{ $recommendation.subtitle }}
+                            </div>
+                            <div class="card-text my-3">
+                                <p class="text-block">
+                                    {{ $recommendation.description }}
+                                    <br>
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {{ end }}
+            </div>
+                {{ end }} 
+            </div>
+    </div>
+</article>
+{{ end }}

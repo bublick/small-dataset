@@ -1,0 +1,28 @@
+{{ $distillery_with_db_id := dict }}
+
+{{ range $index, $distilleryFile := readDir "content/distilleries" }}
+    {{ with $distilleryFile }}
+        {{ $distilleryFileName := .Name}}
+        {{ $rum_file_type_arr := split $distilleryFileName "." }}
+        {{ $rum_file_name := index $rum_file_type_arr 0}}
+        {{ $rum_file_ext := index $rum_file_type_arr 1 }}
+
+        {{ if and (eq $rum_file_ext "md") (ne $rum_file_name "_index") }}
+            {{ $rumPage := $.GetPage (printf "/distilleries/%s" $distilleryFileName) }}
+            {{ with $rumPage }}
+                {{ $singleRum := dict "distillery" .Params.distillery 
+                                    "title" .Title 
+                                    "ratingsCount" .Params.ratings.ratingsCount 
+                                    "ratingsMedian" .Params.ratings.ratingsMedian 
+                                    "rum_count" .Params.rum_count 
+
+                                    "url" .Permalink
+                }}
+                {{ $distillery_with_db_id = merge $distillery_with_db_id (dict (string (len $distillery_with_db_id)) $singleRum) }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
+{{ end }}
+
+{{ $distillery_with_db_id  = sort $distillery_with_db_id "ratingsMedian" "desc" }}
+{{ return $distillery_with_db_id }}

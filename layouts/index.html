@@ -1,0 +1,473 @@
+{{ define "main" }}
+    {{ $rum_count := sub (len (readDir "content/rums")) 1 }}
+    {{ $bottlers_count := sub (len (readDir "content/bottlers")) 1 }}
+    {{ $distilleries_count := sub (len (readDir "content/distilleries")) 1 }}
+    {{ $countries_count := sub (len (readDir "content/countries")) 1 }}
+
+    {{ $tasting_notes_count_rounded := 1 }}
+    {{ $tasting_notes_count := 1 }}
+
+    <!-- Hero Section-->
+    <section class="hero bg-top pt-5 pb-4" id="hero" style="background: url(/assets/img/background/header-bg.webp) no-repeat; background-size: 100% 80%">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 ml-auto pt-lg-5">
+                    <div class="mx-auto device-wrapper">
+                        <img class="img-fluid iphone-device-screenshot" src="/assets/screenshots/homepage/homescreen.webp" alt="Screenshot of the iOS mobile app">
+                    </div>
+                </div>
+
+                <div class="col-lg-6 pt-3 order-first order-md-last my-auto">
+                    <h1 class="hero-title pt-3">We love rum! 🥃</h1>
+
+                    <p class="mb-4 hero-subtitle">Find <b>{{ $rum_count | int }}+ rums</b>, check <b>{{ $tasting_notes_count_rounded | int }}+ rum reviews</b>, and buy your next favorite bottle.</p>
+                    <div>
+                        <a class="text-reset d-inline-block me-2 text-center intro-button-download-app-store" href="{{ .Site.Params.rumx.app_store_url }}">
+                            <img class="dl-image" src="/assets/images/download-app-store.webp" alt="Download app on app store">
+                            <p class="pt-2 font-weight-bold @@class">⭐️ 4,8 <span class="font-weight-normal" style="opacity: 0.6;">(764)</span> </p>
+                        </a>
+                        <a class="text-reset d-inline-block text-center intro-button-download-google-play" href="{{ .Site.Params.rumx.google_play_url }}">
+                            <img class="dl-image" src="/assets/images/download-google-play.webp" alt="Download app on google play">
+                            <p class="pt-2 font-weight-bold @@class">⭐️ 4,8 <span class="font-weight-normal" style="opacity: 0.6;">(229)</span> </p>
+                        </a>
+                    </div>
+
+                    <br>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-center py-3 mt-2" id="about" style="background: url(/assets/img/background/center-bg.webp) no-repeat; background-size: cover">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="text-start px-1">
+                        <div class="card-body text-center">
+                            <p class="h2 mb-1">{{ 36745 }}</p>
+                            <p class="h4 text-muted">registered users</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="text-start px-1">
+                        <div class="card-body text-center">
+                            <p class="h2 mb-1">{{ $tasting_notes_count | int }}</p>
+                            <p class="h4 text-muted">rum reviews</p>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                    <div class="text-start px-1">
+                        <div class="card-body text-center">
+                            <p class="h2 mb-1">{{ .Site.Params.data.community_stats.bottles | int }}</p>
+                            <p class="h4 text-muted">tracked bottles</p>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+
+        <div class="container text-center mt-2">
+            <a href="/blog/introducing-rx-plus/">
+                <img src="/assets/images/rumx_plus_banner.webp" style="max-width:620px;width:100%;aspect-ratio:1337/240" border="0" alt="Announcement of RX+" />
+            </a>
+        </div>
+
+
+        <div class="about py-0 mt-5">
+            <div class="container">
+                <p class="h4 text-uppercase">e<span class="x-highlight">x</span>plained</p>
+                <h2 class="mb-3">Why you'll love RumX</h2>
+                <div class="row pb-5 gy-4">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card pb-1 text-start">
+                            <div class="card-body">
+                                <h3 class="mt-1 mb-3">🥃&nbsp; World's largest rum database</h3>
+                                <p class="text-block mb-0">Find out what a rum tastes like before you buy it and explore over {{ $tasting_notes_count_rounded | int }} rum reviews.</p>
+                                {{ $page := "/search" }}
+                                <a class="btn btn btn-primary mt-3" href={{ $page | safeURL }}>Search {{ $rum_count | int }} rums</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card pb-1 text-start">
+                            <div class="card-body">
+                                <h3 class="mt-1 mb-2">📝&nbsp; Tasting Made Easy</h3>
+                                <p class="text-block mb-0">Rate and remember every rum you try. Our wizard enhances your tasting skills.</p>
+                                {{ $page := "/app/#tasting-assistant" }}
+                                <a class="btn btn-secondary mt-3" href={{ $page | safeURL }}>Taste rum like a pro</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card pb-1 text-start">
+                            <div class="card-body">
+                                <h3 class="mt-1 mb-2">👥&nbsp; Vibrant rum community</h3>
+                                <p class="text-block mb-0">Connect, share opinions, and join bottle splits in our active rum community.</p>
+                                {{ $page := "/app/#community" }}
+                                <a class="btn btn-secondary mt-3" href={{ $page | safeURL }}>Connect & share</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card pb-1 text-start">
+                            <div class="card-body">
+                                <h3 class="mt-1 mb-2">📈&nbsp; Track your collection</h3>
+                                <p class="text-block mb-0">Manage and monitor the market value of your rum collection effortlessly.</p>
+                                {{ $page := "/app/#collection" }}
+                                <a class="btn btn-secondary mt-3" href={{ $page | safeURL }}>Manage your collection</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card pb-1 text-start">
+                            <div class="card-body">
+                                <h3 class="mt-1 mb-2">🛍️&nbsp; Rum marketplace</h3>
+                                <p class="text-block mb-0">Browse through {{ .Site.Params.shops | int }} partner shops. Compare thousands of rums to find your favorite.</p>
+                                {{ $page := "/app/#marketplace" }}
+                                <a class="btn btn-secondary mt-3" href={{ $page | safeURL }}>Buy the right rum</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card pb-1 text-start">
+                            <div class="card-body">
+                                <h3 class="mt-1 mb-2">📱&nbsp; All-in-One Rum App</h3>
+                                <p class="text-block mb-0">All your rum info in one place: Ratings, profiles, prices. Even works offline.</p>
+                                {{ $page := "/app/#all-in-one" }}
+                                <a class="btn btn-secondary mt-3" href={{ $page | safeURL }}>Explore On-the-Go</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container text-center mt-5">
+            {{ $page := .Site.GetPage "/shops/" }}
+            <a href={{ $page.RelPermalink }}>
+                <p class="h4 text-uppercase text-color-secondary">Our partners</p>
+            </a>
+
+            <div class="swiper partners-slider">
+                <div class="swiper-wrapper">
+                    {{ with .Site.Data.sortedShops }}
+                        {{ range . }}
+                        <div class="swiper-slide">
+                            <a href="{{ .shopUrl | safeURL}}"><img src="/assets/images/shops/{{ .shopLogo }}" alt="Logo of {{ .shopName }}" width="80" height="80" loading="lazy"></a>
+                        </div>
+                        {{ end }}
+                    {{ end }}
+                </div>
+
+                <div class="swiper-button-next swiper-partners-button-next"></div>
+            </div>
+        </div>
+
+        <div class="container mt-10">
+            <p class="h4 text-uppercase">E<span class="x-highlight">x</span>plore</p>
+            <h2 class="mb-3">World's largest rum database</h2>
+            
+            <p class="text-block">Our database is the largest of its kind, featuring a wide range of rums from all corners of the globe, like 
+                {{ $page := "/countries/jamaica" }}
+                <a class="main-link" href={{ $page | safeURL }}>Jamaica</a> or
+                {{ $page := "/countries/barbados" }} 
+                <a class="main-link" href={{ $page | safeURL }}>Barbados</a>. Whether you're a fan of the legendary
+                {{ $page := "/countries/guyana/" }} 
+                <a class="main-link" href={{ $page | safeURL }}>Guyana</a>  rums from 
+                {{ $page := "/bottlers/velier/" }}
+                <a class="main-link" href={{ $page | safeURL }}>Velier</a>, the trendy 
+                {{ $page := "/distilleries/caroni/" }}
+                <a class="main-link" href={{  $page | safeURL }}>Caroni</a>  distillery, or household names like 
+                {{ $page := "/bottlers/maison-ferrand/" }}
+                <a class="main-link" href={{ $page | safeURL }}>Plantation</a>, 
+                {{ $page := "/distilleries/hampden/" }}
+                <a class="main-link" href={{ $page | safeURL }}>Hampden</a>, 
+                {{ $page := "/distilleries/foursquare/" }}
+                <a class="main-link" href={{ $page | safeURL }}>Foursquare</a>, or 
+                {{ $page := "/distilleries/industrias-licoreras-de-guatemala/" }}
+                <a class="main-link" href={{ $page | safeURL }}>Ron Zacapa</a>, we've got you covered.</p>
+
+            <div class="mt-3">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <p class="h3 mb-0">{{ $tasting_notes_count | int }} rum reviews</p>
+                                {{ $page := "/app/" }}
+                                <a href={{ $page | safeURL }} class="stretched-link" aria-label="Learn more about the review portal"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <p class="h3 mb-0">{{ $rum_count | int }} rums</p>
+                                {{ $page := "/search" }}
+                                <a href={{ $page | safeURL }} class="stretched-link" aria-label="Search all rums in the database"></a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <!-- { { site.distilleries | where_exp: 'distillery', 'distillery.rum_count >= 3' | size | int } } -->
+                                <p class="h3 mb-0">{{ $distilleries_count | int }} distilleries</p>
+                                {{ $page := "/distilleries/" }}
+                                <a href={{ $page | safeURL }} class="stretched-link" aria-label="Overview about all listed distilleries"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-3 mb-3">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <!-- { { site.bottlers | where_exp: 'bottler', 'bottler.rum_count >= 3' | size | int }} -->
+                                <p class="h3 mb-0">{{ $bottlers_count | int }} bottlers</p>
+                                {{ $page := "/bottlers/" }}
+                                <a href={{ $page | safeURL }} class="stretched-link" aria-label="Overview about all listed independent bottlers"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>        
+
+            <p class="text-block mb-1">Looking to purchase? Our database of <b>{{ $tasting_notes_count_rounded | int }} trusted reviews and ratings</b> is complemented by a growing 
+                {{ $page := .Site.GetPage "/app/#marketplace" }}
+                
+                <a class="main-link" href={{ $page | safeURL }}>rum marketplace</a> with <b>{{ len .Site.Data.shop_items_by_rx }} offers</b> from reliable shop partners. So whether you're searching for a specific rum or keen to explore new tastes and trends, RumX is your one-stop destination. <b>Start exploring now:</b></p>
+            
+            {{ $page := "/search" }}
+            <a class="btn btn-primary mt-2 me-2" href={{ $page | safeURL }}>Search all {{ $rum_count | int }} rums</a>
+            {{ $page := "/best-rums-in-the-world/" }}
+            <a class="btn btn-secondary mt-2" href={{ $page | safeURL }}>Best rums in the world</a>
+
+            <h3 class="mt-5 mb-3">Spotlight: Top rums of September 2023</h3>
+
+            <p class="text-block">Every month, we spotlight the rums that are trending in the RumX community. Check out our <b>monthly review</b> for the top-rated picks. Looking for a new favorite or just curious? This is your quick guide to <b>what's hot in rum right now</b>. Don't miss out!</p>
+
+            <div class="row">
+                {{- partial "rums.html" (dict "lineup_ids" "15940|16863|17125" "show_top_comment" true) -}}
+            </div>
+            {{ $page := .Site.GetPage "/blog/best-rums-september-2023/" }}
+            <a class="btn btn-secondary mt-1" href={{ $page.RelPermalink }}>Check out the full chart</a>
+        </div>
+
+        <div class="container mt-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="mx-auto device-wrapper pt-4">
+                        <img class="img-fluid iphone-device-screenshot" src="/assets/screenshots/homepage/feed.webp" alt="Screenshot of the community feed (iOS app)" loading="lazy">
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 order-first order-md-last">
+                    <p class="h4 text-uppercase">E<span class="x-highlight">x</span>change</p>
+                    <h2 class="mb-3">World's largest rum community</h2>
+
+                    <p class="text-block"><a class="main-link" href="https://www.rum-x.com/blog/follow-your-friends/">Follow your friends</a> and <b>renowned bloggers</b> to stay updated on new rum highlights. Share your tastings, earn likes, and even join forum discussions on hot rum topics. Whether you're an expert or a newcomer, RumX is your ultimate hub for all things rum. Connect, discover, and chat - <b>be part of the ultimate rum experience today!</b></p>
+
+                    <div class="detail-margin">
+                        <a class="anchor" id="related-discussions"></a>
+                        <script src="/assets/scripts/forum-integration.js" defer></script>
+
+                        <h3>Trending topics</h3>
+
+                        <d-topics-list discourse-url="https://community.rum-x.com/" template="basic" per-page="4" top_period="yearly"></d-topics-list>
+                        
+                        <a class="btn btn-primary my-1" href="https://community.rum-x.com">View all topics</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <p class="h4 text-uppercase">E<span class="x-highlight">x</span>perience</p>
+                    <h2 class="mb-3">Your personal rum assistant</h2>
+
+                    <p class="text-block">Step into the world of RumX and meet your <b>Personal Rum Assistant</b>, designed to elevate your rum experience to the next level.</p>
+
+                    <ul>
+                        <li><b>Interactive Tasting Wizard:</b> Become a rum-tasting expert. Our wizard walks you through the nuances of flavor, aroma, and finish, helping you appreciate each bottle like a seasoned connoisseur.</li>
+                        <li><b>Track Your Tastings:</b> Never forget your rum experiences again. RumX lets you log and revisit each tasting, ensuring you remember which rums captured your palate and which ones didn't.</li>
+                        <li><b>Digitalize Your Collection:</b> Turn your physical rum shelf into a digital showcase. Log each bottle and track its market value. Perfect for both casual enthusiasts and serious collectors.</li>
+                        <li><b>Personalized Recommendations:</b> Receive customized shopping suggestions that align with your taste profile based on your past favorites and purchases. Making it easier for you to find rums you will love.</li>
+                    </ul>
+
+                    <p class="text-block">Discover, taste, collect, and shop smarter with your Personal Rum Assistant inside the <b>free RumX app</b>.</p>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="mx-auto device-wrapper pt-4">
+                        <img class="img-fluid iphone-device-screenshot" src="/assets/screenshots/homepage/add_tasting.webp" alt="Screenshot: Entering a tasting note in the iOS App" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mt-5 mb-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="mx-auto device-wrapper pt-4">
+                        <img class="img-fluid iphone-device-screenshot" src="/assets/screenshots/homepage/shopping_cart.webp" alt="Screenshot: Buy rums conviniently directly in the RumX app" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="col-lg-6 order-first order-md-last">
+                    <p class="h4 text-uppercase">Ne<span class="x-highlight">x</span>t rum</p>
+                    <h2 class="mb-3">Your personal shopping guide</h2>
+
+                    <p class="text-block">With RumX you get the best of two worlds: <b>Detailed rum reviews</b> and <b>a place to buy them</b>, all in one app.</p>
+
+                    <ul>
+                        <li><b>Buyer's Guide:</b> Sort by country, price, or ratings to find your next perfect bottle.</li>
+                        <li><b>Easy Checkout:</b> No need for multiple accounts. One RumX login gets you access to all our partner shops.</li>
+                        <li><b>Get Inspired:</b> Check out our expert picks or find new favorites based on what you already like.</li>
+                    </ul>
+
+                    <p>Own your own online rum store? Partner with RumX to showcase your selection to thousands of passionate rum lovers. <a class="main-link" href="mailto:{{ .Site.Params.email }}">Contact us</a> today to get your store and products featured on our platform and expand your reach like never before.</p>
+
+                    <p class="text-block"><b>🌟 Why We're Different 🌟</b><br>See a rum you like? Read reviews, check out its flavors, and if you're sold, buy it right here in the app. One RumX account works for all our partner shops, so shopping is a breeze.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section container text-center">
+            <p class="h4 text-uppercase text-color-secondary">Supported by</p>
+
+            <p>Supported by startup accelerators, we're your go-to rum platform. We're proud to have won the <a class="main-link" href="https://sandbox-stuttgart.de/2021/01/08/demo-week-gewinner-stehen-fest/">Audience Favorite Award</a> from <b>Sandbox Startup Accelerator</b> at the 2020 Demo Day.</p>
+            
+            <div class="row">
+                <div class="col-6">
+                    <a href="https://sandbox-stuttgart.de"><img src="/assets/images/supporter/sandbox_startup.webp" alt="Logo of the Startup Accelerator Sandbox" width="100" height="100" loading="lazy"></a>
+                </div>
+                <div class="col-6">
+                    <a href="https://www.hdm-stuttgart.de/startup-center/"><img src="/assets/images/supporter/hdm_startup_generator.webp" alt="Logo of the HDM Stuttgart Startup Generator" width="100" height="100" loading="lazy"></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="p-0 mt-5" id="testimonials" style="background: url(/assets/img/background/bloggers-bg.webp) no-repeat; background-size: 40% 100%; background-position: left center">
+        <div class="container text-center">
+            <h2 class="h4 text-uppercase text-color-secondary">Testimonials</h2>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="swiper testimonials-slider">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide h-auto">
+                                <div class="my-5 pt-3">
+                                    <div class="card pt-5">
+                                        <div class="card-body index-forward">
+                                            <div class="testimonial-img pb-5"><img class="rounded-circle" src="/assets/images/bloggers/logo_blog_singlecaskrum.webp" alt="Logo of the blog: Single Cask Rum"
+                                                    width="100" loading="lazy"></div>
+                                            <p class="text-muted mb-4">Had you asked me about a year ago what Rum is truly missing, I probably would have said a proper, functioning database. With the
+                                                RumX App it is finally here and its functionalities leave little to be desired.</p>
+                                            <p class="h4 mb-0">Single Cask Rum</p>
+                                            <p class="text-color-secondary text-sm"><a href="https://www.singlecaskrum.com/">singlecaskrum.com</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide h-auto">
+                                <div class="my-5 pt-3">
+                                    <div class="card pt-5">
+                                        <div class="card-body index-forward">
+                                            <div class="testimonial-img pb-5"><img class="rounded-circle" src="/assets/images/bloggers/logo_blog_wrtw.webp" alt="Logo of the blog: Who Rhum The World"
+                                                    width="100" loading="lazy"></div>
+                                            <p class="text-muted mb-4">Curious beginner, confirmed amateur or strong collector, this application will allow you to remember your tasting notes and
+                                                compare them with other members of the community, all with an intuitive and fun interface.</p>
+                                            <p class="h4 mb-0">Who Rhum The World</p>
+                                            <p class="text-color-secondary text-sm"><a href="https://www.whorhumtheworld.com/">whorhumtheworld.com</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide h-auto">
+                                <div class="my-5 pt-3">
+                                    <div class="card pt-5">
+                                        <div class="card-body index-forward">
+                                            <div class="testimonial-img pb-5"><img class="rounded-circle" src="/assets/images/bloggers/logo_blog_leblogaroger.webp" alt="Logo of the blog: Le Blog A Roger"
+                                                    width="100" loading="lazy"></div>
+                                            <p class="text-muted mb-4">Nice application that allows me to manage my acute collection and to share my different impressions of the rums tasted ...</p>
+                                            <p class="h4 mb-0">Le Blog A Roger</p>
+                                            <p class="text-color-secondary text-sm"><a href="https://www.leblogaroger.eu/">leblogaroger.eu</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ with .Site.Data.user_reviews}}
+                            {{ range . }}
+                            <div class="swiper-slide h-auto">
+                                <div class="my-5 pt-3">
+                                    <div class="card pt-5">
+                                        <div class="card-body index-forward">
+                                            <div class="testimonial-img pb-5"><img class="rounded-circle" src="/assets/images/bloggers/{{ .image }}" alt="Logo of the blog: Le Blog A Roger"
+                                                    width="100" loading="lazy"></div>
+                                            <p class="text-muted mb-4">{{ .cite }}</p>
+                                            <p class="h4 mb-0">{{ .username }}</p>
+                                            <p class="text-color-secondary text-sm">App user</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {{ end }}
+                            {{ end }}
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="my-5" id="press-articles" style="background: url(/assets/img/background/press-bg.webp) no-repeat; background-size: 40% 100%; background-position: right center">
+        <div class="container text-center">
+            <h2 class="h4 text-uppercase text-color-secondary">Media</h2>
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="swiper testimonials-slider">
+                        <div class="swiper-wrapper">
+                            {{ with .Site.Data.press_releases }}
+                                {{ range . }}
+                                <div class="swiper-slide h-auto">
+                                    <div class="my-2 pt-1 pb-3">
+                                        <div class="card">
+                                            <div class="card-body index-forward">
+                                                <p class="h3">{{ .title }}</p>
+                                                <a class="main-link mt-1" href="{{ .url }}">{{ .website }}</a>
+                                                <p class="text-muted mb-0">{{ .date }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{ end }}
+                            {{ end }}
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="info-section container text-center">
+            <p class="h4 text-uppercase text-color-secondary">Ready to elevate your rum journey?</p>
+
+            <p class="text-block">Download the free RumX app and join the largest rum community out there. Get expert and community reviews, exclusive offers, and personalized recommendations, all in one place.</p>
+            
+            <a class="intro-button-download-app-store" href="{{ .Site.Params.rumx.app_store_url }}"><img class="dl-image" src="/assets/images/download-app-store.webp" alt="Download app on app store" loading="lazy"></a>
+            <a class="intro-button-download-google-play" href="{{ .Site.Params.rumx.google_play_url }}"><img class="dl-image" src="/assets/images/download-google-play.webp" alt="Download app on google play" loading="lazy"></a>
+        </div>
+    </section>
+
+    <script src="/assets/scripts/front.js"></script>
+{{ end }}

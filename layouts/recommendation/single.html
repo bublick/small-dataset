@@ -1,0 +1,56 @@
+{{ define "main" }}
+<article>
+        <div class="container empty-page mt-3">
+                <nav class="breadcrumb">
+                        <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+                                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                                        <a class="main-link" itemprop="item" href="/"><span itemprop="name">Home</span></a>
+                                        <meta itemprop="position" content="1">
+                                </li>
+                                <li class="breadcrumb-arrow">›</li>
+                                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                                        <a class="main-link" itemprop="item" href="/recommendations/"><span itemprop="name">Recommendations</span></a>
+                                        <meta itemprop="position" content="2">
+                                </li>
+                                <li class="breadcrumb-arrow">›</li>
+                                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                                        <p class="text-block"><span itemprop="name">{{ .Params.title }}</span></p>
+                                        <meta itemprop="position" content="3">
+                                </li>
+                        </ol>
+                </nav>
+
+                <h1 class="base-headline">{{ .Params.title }}</h1>
+                <p class="text-block"><b>{{ .Params.subtitle }}</b></p>
+                <p class="text-block">{{ .Params.description }}</p>
+                <p class="text-block">{{ .Params.body }}</p>
+
+                <div class="row">
+                        {{ $rec_rums := dict }}
+                        {{range $rum_info_index, $rum_info := .Params.rums}}
+                                {{ $rx_id := printf "RX%s" (string $rum_info.rumx_id)}}
+                                {{ $single_rec := dict "rxid" $rx_id }}
+                                {{ $rec_rums = merge $rec_rums (dict (string $rum_info_index) $single_rec) }}
+                        {{end}}
+                        
+                        {{ $all_rums := partialCached "cached_rums_with_db_id.html" . }}
+                        {{ range $index, $rum := $all_rums }}
+                                {{ range $rec_rum_index, $rec_rum := $rec_rums }}
+                                {{ if eq $rum.rxid $rec_rum.rxid }}
+                                        {{ $singleRum := dict "rxid" $rum.rxid 
+                                                        "rxid_number" $rum.rxid 
+                                                        "title" $rum.Title 
+                                                        "country_code" $rum.country_code 
+                                                        "ratingsCount" $rum.ratingsCount 
+                                                        "ratingsMedian" $rum.ratingsMedian 
+                                                        "rum_count" $rum.rum_count 
+                                                        "url" $rum.url }}
+
+                                        {{partialCached "rum_item_from_dict.html" (dict "rum" $singleRum "show_top_comment" true) }}
+                                {{ end }}
+                                {{ end }}
+                        {{ end }}
+                </div>
+        </div>
+</article>
+{{ end }}

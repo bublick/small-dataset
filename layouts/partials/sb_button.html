@@ -1,0 +1,10 @@
+{{ $buttonClass := "" }}
+{{ if eq .component.style "primary" }}
+    {{ $buttonClass = "btn-primary" }}
+{{ else if eq .component.style "secondary" }}
+    {{ $buttonClass = "btn-secondary" }}
+{{ else }}
+    {{ $buttonClass = "btn-tertiary" }}
+{{ end }}
+{{ .component._editable }}
+<a class="btn mb-3 {{ $buttonClass }}" href={{ .component.link.url }} target="_blank">{{ .component.text }}</a>

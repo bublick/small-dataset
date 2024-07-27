@@ -1,0 +1,490 @@
+{
+    "Stroh": {
+        "longitude": 14.294453000000001,
+        "latitude": 46.600738
+    },
+    "Skeldon": {
+        "longitude": -58.306159999999998,
+        "latitude": 6.8404829999999999
+    },
+    "Bonne Mère": {
+        "longitude": -61.678088000000002,
+        "latitude": 16.264949999999999
+    },
+    "Westerhall Estate": {
+        "longitude": -61.703477999999997,
+        "latitude": 12.021708
+    },
+    "Depaz": {
+        "longitude": -61.165329999999997,
+        "latitude": 14.757616000000001
+    },
+    "Licores Veracruz": {
+        "longitude": -96.917160999999993,
+        "latitude": 18.876207000000001
+    },
+    "Caroni": {
+        "longitude": -61.382401999999999,
+        "latitude": 10.606374000000001
+    },
+    "Domaine du Marquisat de Sainte Marie": {
+        "longitude": -61.571511999999998,
+        "latitude": 16.086203999999999
+    },
+    "Long Pond": {
+        "longitude": -77.546795000000003,
+        "latitude": 18.427109000000002
+    },
+    "Savanna": {
+        "longitude": 55.637760999999998,
+        "latitude": -20.916118999999998
+    },
+    "Industria Licorera de Caldas": {
+        "longitude": -75.442490000000006,
+        "latitude": 5.0396559999999999
+    },
+    "Bleeding Heart Rum Company": {
+        "longitude": 121.025854,
+        "latitude": 14.556546000000001
+    },
+    "Destilería Serrallés": {
+        "longitude": -66.564918000000006,
+        "latitude": 18.015415999999998
+    },
+    "Rhum J.M": {
+        "longitude": -61.135969000000003,
+        "latitude": 14.862613
+    },
+    "Monymusk": {
+        "longitude": -77.249865,
+        "latitude": 17.810305
+    },
+    "Bacardi": {
+        "longitude": -66.140418999999994,
+        "latitude": 18.459745000000002
+    },
+    "Hampden": {
+        "longitude": -77.745233999999996,
+        "latitude": 18.440315999999999
+    },
+    "Gardel": {
+        "longitude": -61.348745000000001,
+        "latitude": 16.328036999999998
+    },
+    "Isautier": {
+        "longitude": 55.465367999999998,
+        "latitude": -21.312252999999998
+    },
+    "Clément": {
+        "longitude": -60.907170000000001,
+        "latitude": 14.602624
+    },
+    "Arawaks": {
+        "longitude": -73.499083999999996,
+        "latitude": 18.280726000000001
+    },
+    "West Indies": {
+        "longitude": -59.631757999999998,
+        "latitude": 13.123718
+    },
+    "Engenho Novo": {
+        "longitude": -16.91113,
+        "latitude": 32.647297999999999
+    },
+    "Grenada Distillers": {
+        "longitude": -61.739778999999999,
+        "latitude": 12.025687
+    },
+    "Darboussier": {
+        "longitude": -61.588608000000001,
+        "latitude": 16.257228000000001
+    },
+    "Matusalem": {
+        "longitude": -69.786101000000002,
+        "latitude": 18.808084000000001
+    },
+    "New Yarmouth": {
+        "longitude": -77.275718999999995,
+        "latitude": 17.880486000000001
+    },
+    "Bologne": {
+        "longitude": -61.727058,
+        "latitude": 16.009395000000001
+    },
+    "J. Wray & Nephew LTD.": {
+        "longitude": -76.839358000000004,
+        "latitude": 18.009903000000001
+    },
+    "AS Liviko": {
+        "longitude": 24.777961999999999,
+        "latitude": 59.426515999999999
+    },
+    "Don José": {
+        "longitude": -79.468548999999996,
+        "latitude": 9.0450560000000007
+    },
+    "Santa Teresa": {
+        "longitude": -67.263255000000001,
+        "latitude": 10.236571
+    },
+    "Engenhos da Calheta": {
+        "longitude": -17.183167999999998,
+        "latitude": 32.735301999999997
+    },
+    "Chalong Bay Distillery": {
+        "longitude": 98.352377000000004,
+        "latitude": 7.8416569999999997
+    },
+    "Le Rocher": {
+        "longitude": -72.11591,
+        "latitude": 19.336323
+    },
+    "Cartavio": {
+        "longitude": -79.219735,
+        "latitude": -7.896503
+    },
+    "Destileria Carupano": {
+        "longitude": -63.252417000000001,
+        "latitude": 10.651460999999999
+    },
+    "Distillerie du Simon": {
+        "longitude": -60.867762999999997,
+        "latitude": 14.589391000000001
+    },
+    "South Pacific": {
+        "longitude": 177.441429,
+        "latitude": -17.614968000000001
+    },
+    "Foursquare": {
+        "longitude": -59.482289999999999,
+        "latitude": 13.105492
+    },
+    "Varela Hermanos": {
+        "longitude": -79.468548999999996,
+        "latitude": 9.0450560000000007
+    },
+    "Appleton Estate": {
+        "longitude": -77.727703000000005,
+        "latitude": 18.165661
+    },
+    "Destilerías Unidas S. A.": {
+        "longitude": -69.178504000000004,
+        "latitude": 9.753406
+    },
+    "Albion": {
+        "longitude": -57.359850999999999,
+        "latitude": 6.2725419999999996
+    },
+    "Millonario": {
+        "longitude": -75.165036999999998,
+        "latitude": -4.3598569999999999
+    },
+    "Worthy Park": {
+        "longitude": -77.146603999999996,
+        "latitude": 18.144801999999999
+    },
+    "Saint Lucia Distillers": {
+        "longitude": -61.024940000000001,
+        "latitude": 13.953944999999999
+    },
+    "Compania Licorera": {
+        "longitude": -87.026002000000005,
+        "latitude": 12.579361
+    },
+    "Saint James": {
+        "longitude": -60.998165999999998,
+        "latitude": 14.783578
+    },
+    "The Antigua Distillery": {
+        "longitude": -61.853821000000003,
+        "latitude": 17.126335000000001
+    },
+    "Grays": {
+        "longitude": 57.572839000000002,
+        "latitude": -20.098908999999999
+    },
+    "Industria de Licores del Valle": {
+        "longitude": -76.429235000000006,
+        "latitude": 3.5211429999999999
+    },
+    "Neisson": {
+        "longitude": -61.175910999999999,
+        "latitude": 14.700224
+    },
+    "River Antoine": {
+        "longitude": -61.607956999999999,
+        "latitude": 12.178143
+    },
+    "Nine Leaves": {
+        "longitude": 135.916843,
+        "latitude": 35.084831000000001
+    },
+    "Alcoholes Del Istmo": {
+        "longitude": -80.537232000000003,
+        "latitude": 7.8731450000000001
+    },
+    "Casimir": {
+        "longitude": -73.781250999999997,
+        "latitude": 18.519653000000002
+    },
+    "Diamond": {
+        "longitude": -58.192494000000003,
+        "latitude": 6.7182230000000001
+    },
+    "Simon‘s": {
+        "longitude": 9.1319850000000002,
+        "latitude": 50.096960000000003
+    },
+    "Oliver & Oliver": {
+        "longitude": -69.924430000000001,
+        "latitude": 18.469204999999999
+    },
+    "Industria de Licores de Boyacá": {
+        "longitude": -73.361101000000005,
+        "latitude": 5.5209820000000001
+    },
+    "Trois Rivières": {
+        "longitude": -60.963799000000002,
+        "latitude": 14.479798000000001
+    },
+    "Port Mourant": {
+        "longitude": -58.192494000000003,
+        "latitude": 6.7182230000000001
+    },
+    "Licorero del Centro": {
+        "longitude": -66.775632000000002,
+        "latitude": 10.136123
+    },
+    "Le Galion": {
+        "longitude": -60.947412,
+        "latitude": 14.717874
+    },
+    "Arcane": {
+        "longitude": 57.593580000000003,
+        "latitude": -20.296400999999999
+    },
+    "Carrere": {
+        "longitude": -61.595511000000002,
+        "latitude": 16.175231
+    },
+    "St. Nicholas Abbey": {
+        "longitude": -59.589652000000001,
+        "latitude": 13.277585
+    },
+    "Atlantico": {
+        "longitude": -70.035696000000002,
+        "latitude": 18.482661
+    },
+    "Suriname Alcoholic Beverages": {
+        "longitude": -55.142828000000002,
+        "latitude": 5.830254
+    },
+    "Matugga": {
+        "longitude": 0.069766999999999996,
+        "latitude": 52.321275999999997
+    },
+    "Dzama": {
+        "longitude": 47.512189999999997,
+        "latitude": -18.928561999999999
+    },
+    "Destilería Colombiana": {
+        "longitude": -75.506255999999993,
+        "latitude": 10.370507
+    },
+    "Alcoholes Finos Dominicanos": {
+        "longitude": -69.239660000000001,
+        "latitude": 18.618144000000001
+    },
+    "Brugal": {
+        "longitude": -70.669100999999998,
+        "latitude": 19.779060000000001
+    },
+    "O Reizinho": {
+        "longitude": -16.791723999999999,
+        "latitude": 32.687855999999996
+    },
+    "Callwood": {
+        "longitude": -64.658197000000001,
+        "latitude": 18.422711
+    },
+    "Engenhos do Norte": {
+        "longitude": -16.828099000000002,
+        "latitude": 32.774213000000003
+    },
+    "Cuello": {
+        "longitude": -88.187237999999994,
+        "latitude": 17.498911
+    },
+    "Licores de Antioquia": {
+        "longitude": -75.582946000000007,
+        "latitude": 6.1943900000000003
+    },
+    "Takamaka Bay": {
+        "longitude": 55.523314999999997,
+        "latitude": -4.7197060000000004
+    },
+    "Fabrica Nacional de Licores": {
+        "longitude": -84.342988000000005,
+        "latitude": 10.018286
+    },
+    "Havana Club": {
+        "longitude": -82.102656999999994,
+        "latitude": 22.932314999999999
+    },
+    "Sancti Spiritus": {
+        "longitude": -79.438813999999994,
+        "latitude": 21.933714999999999
+    },
+    "Spirituosenschmiede": {
+        "longitude": 8.6386310000000002,
+        "latitude": 49.641798000000001
+    },
+    "Habitation du Simon": {
+        "longitude": -60.870292999999997,
+        "latitude": 14.587020000000001
+    },
+    "Bellevue": {
+        "longitude": -61.241801000000002,
+        "latitude": 15.926239000000001
+    },
+    "L&L Liquors": {
+        "longitude": -88.562186999999994,
+        "latitude": 18.077995999999999
+    },
+    "Litchquor Ltd.": {
+        "longitude": 57.625607000000002,
+        "latitude": -20.035986000000001
+    },
+    "Domaine de Séverin": {
+        "longitude": -61.690618999999998,
+        "latitude": 16.268478999999999
+    },
+    "Saint Maurice": {
+        "longitude": -54.288988000000003,
+        "latitude": 5.0663999999999998
+    },
+    "New Grove": {
+        "longitude": 57.572355000000002,
+        "latitude": -20.097393
+    },
+    "Naga": {
+        "longitude": 110.7321,
+        "latitude": -7.5698449999999999
+    },
+    "J. Bally": {
+        "longitude": -60.867762999999997,
+        "latitude": 14.589391000000001
+    },
+    "T.D.L": {
+        "longitude": -61.474398000000001,
+        "latitude": 10.649480000000001
+    },
+    "Malteco": {
+        "longitude": -91.517735000000002,
+        "latitude": 14.841556000000001
+    },
+    "Industrias Licoreras de Guatemala": {
+        "longitude": -90.598044000000002,
+        "latitude": 14.629365999999999
+    },
+    "Demerara Distillers Ltd": {
+        "longitude": -58.192494000000003,
+        "latitude": 6.7182230000000001
+    },
+    "ReimonenQ": {
+        "longitude": -61.689532,
+        "latitude": 16.316310999999999
+    },
+    "MHOBA": {
+        "longitude": 31.455922999999999,
+        "latitude": -25.527418999999998
+    },
+    "El Ron Prohibido": {
+        "longitude": -101.629616,
+        "latitude": 20.507581999999999
+    },
+    "Chamarel": {
+        "longitude": 57.396324,
+        "latitude": -20.427876000000001
+    },
+    "Poisson": {
+        "longitude": -61.312251000000003,
+        "latitude": 15.891997
+    },
+    "Revolte": {
+        "longitude": 8.3576720000000009,
+        "latitude": 49.629888999999999
+    },
+    "Ron Aldea": {
+        "longitude": -17.762397,
+        "latitude": 28.808757
+    },
+    "Damoiseau": {
+        "longitude": -61.375476999999997,
+        "latitude": 16.320734000000002
+    },
+    "Maison La Mauny": {
+        "longitude": -60.906567000000003,
+        "latitude": 14.506171999999999
+    },
+    "Mount Gay": {
+        "longitude": -59.610357,
+        "latitude": 13.290737999999999
+    },
+    "Rivière du Mât": {
+        "longitude": 55.610804999999999,
+        "latitude": -20.997748000000001
+    },
+    "Barbancourt": {
+        "longitude": -72.304665,
+        "latitude": 18.600311999999999
+    },
+    "Cayman Spirits": {
+        "longitude": -81.371487000000002,
+        "latitude": 19.301794999999998
+    },
+    "St. Vincent Distillers": {
+        "longitude": -61.119756000000002,
+        "latitude": 13.28491
+    },
+    "Medine Estate": {
+        "longitude": 57.394240000000003,
+        "latitude": -20.260556000000001
+    },
+    "Dillon": {
+        "longitude": -60.998165999999998,
+        "latitude": 14.783578
+    },
+    "Uitvlugt": {
+        "longitude": -58.306159999999998,
+        "latitude": 6.8404829999999999
+    },
+    "Travellers": {
+        "longitude": -88.214307000000005,
+        "latitude": 17.510573000000001
+    },
+    "Captain Morgan": {
+        "longitude": -64.776138000000003,
+        "latitude": 17.714870999999999
+    },
+    "La Favorite": {
+        "longitude": -61.034508000000002,
+        "latitude": 14.635361
+    },
+    "Enmore": {
+        "longitude": -57.993800999999998,
+        "latitude": 6.7449279999999998
+    },
+    "Bielle": {
+        "longitude": -61.266196000000001,
+        "latitude": 15.917884000000001
+    },
+    "Cruzan": {
+        "longitude": -64.825959999999995,
+        "latitude": 17.704778999999998
+    },
+    "Chelo": {
+        "longitude": -72.250944000000004,
+        "latitude": 19.646335000000001
+    }
+}

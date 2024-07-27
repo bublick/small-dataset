@@ -1,0 +1,43 @@
+{{ $rums_with_db_id := dict }}
+
+{{ range $index, $rumFile := readDir "content/rums" }}
+    {{ with $rumFile }}
+        {{ $rumFileName := .Name}}
+        {{ $rum_file_type_arr := split $rumFileName "." }}
+        {{ $rum_file_name := index $rum_file_type_arr 0}}
+        {{ $rum_file_ext := index $rum_file_type_arr 1 }}
+
+        {{ if and (eq $rum_file_ext "md") (ne $rum_file_name "_index") }}
+            {{ $rumPage := $.GetPage (printf "/rums/%s" $rumFileName) }}
+            {{ with $rumPage }}
+                {{ $singleRum := dict "rxid" .Params.rxid
+                                    "rumFilename" $rumFileName 
+                                    "id_databaseRumID" .Params.id_databaseRumID
+                                    "refs_imageURLs" .Params.refs_imageURLs 
+                                    "rxid_number" .Params.rxid_number 
+                                    "basics_fullName" .Params.basics_fullName
+                                    "basics_shortName" .Params.basics_shortName
+                                    "basics_title" .Params.basics_title
+                                    "basics_description" .Params.basics_description
+                                    "basics_independentBottler_name" .Params.basics_independentBottler.name
+                                    "basics_distillery_path" .Params.basics_distillery.path
+                                    "title" .Title 
+                                    "country_code" .Params.basics_country.code 
+                                    "ratingsCount" .Params.ratings.ratingsCount 
+                                    "ratingsMedian" .Params.ratings.ratingsMedian 
+                                    "rum_count" .Params.rum_count 
+                                    "review_short" .Params.ai.review_data.review_short
+                                    "reviews_len" (len .Params.reviews)
+                                    "top_review_comment" (index .Params.reviews 0).comment
+                                    "top_review_username" (index .Params.reviews 0).username
+
+                                    "url" .Permalink 
+                }}
+                {{ $rums_with_db_id = merge $rums_with_db_id (dict (string .Params.rxid) $singleRum) }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
+{{ end }}
+
+{{ $rums_with_db_id  = sort $rums_with_db_id "ratingsMedian" "desc" }}
+{{ return $rums_with_db_id }}

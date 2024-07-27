@@ -1,0 +1,224 @@
+[{
+    "id": 1,
+    "name": "Single Cask Rum",
+    "url": "https://www.singlecaskrum.com/",
+    "img": "logo_blog_singlecaskrum.webp",
+    "quote": "Had you asked me about a year ago what Rum is truly missing, I probably would have said a proper, functioning database. With the Rum Tasting Notes App it is finally here and its functionalities leave little to be desired."
+},
+{
+    "id": 2,
+    "name": "Barrel Aged Thoughts",
+    "url": "https://barrel-aged-thoughts.blogspot.com",
+    "img": "logo_blog_barrelagedthoughts.webp",
+    "quote": ""
+},
+{
+    "id": 3,
+    "name": "Le Blog A Roger",
+    "url": "https://www.leblogaroger.eu/",
+    "img": "logo_blog_leblogaroger.webp",
+    "quote": "Nice application that allows me to manage my acute collection and to share my different impressions of the rums tasted ... "
+},
+{
+    "id": 4,
+    "name": "Who Rhum The World",
+    "url": "https://www.whorhumtheworld.com/",
+    "img": "logo_blog_wrtw.webp",
+    "quote": "Curious beginner, confirmed amateur or strong collector, this application will allow you to remember your tasting notes and compare them with other members of the community, all with an intuitive and fun interface."
+},
+{
+    "id": 5,
+    "name": "Préférence Rhum",
+    "url": "https://www.preference-rhum.fr/",
+    "img": "logo_blog_pr.webp",
+    "quote": ""
+},
+{
+    "id": 6,
+    "name": "In Spiritus Veritas",
+    "url": "https://www.in-spiritus-veritas.blogspot.com",
+    "img": "logo_blog_isv.webp",
+    "quote": ""
+},
+{
+    "id": 7,
+    "name": "The Fat Rum Pirate",
+    "url": "https://www.thefatrumpirate.com/",
+    "img": "logo_tfrp.webp",
+    "quote": ""
+},
+{
+    "id": 8,
+    "name": "Rum Diaries Blog",
+    "url": "https://rumdiariesblog.wordpress.com",
+    "img": "logo_rdb.webp",
+    "quote": ""
+},
+{
+    "id": 9,
+    "name": "Tasting Bro's",
+    "url": "https://tastingbros.com",
+    "img": "logo_tb.webp",
+    "quote": ""
+},
+{
+    "id": 10,
+    "name": "The Dunder Hut",
+    "url": "https://dunderhut.com",
+    "img": "logo_tdh.webp",
+    "quote": ""
+},
+{
+    "id": 11,
+    "name": "RUMprobiert",
+    "url": "https://www.rumprobiert.de/",
+    "img": "logo_rump.webp",
+    "quote": ""
+},
+{
+    "id": 12,
+    "name": "Les amis des amis du Rhum",
+    "url": "https://www.lesamisdesamisdurhum.com/",
+    "img": "logo_ladadr.webp",
+    "quote": ""
+},
+{
+    "id": 13,
+    "name": "Zucker und Zeste",
+    "url": "https://zuckerundzeste.de/",
+    "img": "logo_zuz.webp",
+    "quote": ""
+},
+{
+    "id": 14,
+    "name": "Barrel Aged Mind",
+    "url": "https://barrel-aged-mind.blogspot.com",
+    "img": "logo_bam.webp",
+    "quote": ""
+},
+{
+    "id": 15,
+    "name": "The Rum Robin",
+    "url": "https://therumrobin.com",
+    "img": "logo_trr.webp",
+    "quote": ""
+},
+{
+    "id": 16,
+    "name": "The Lone Caner",
+    "url": "https://www.thelonecaner.com",
+    "img": "logo_tlc.webp",
+    "quote": ""
+},
+{
+    "id": 17,
+    "name": "New World Rum Club",
+    "url": "https://www.youtube.com/channel/UCJM5WyZaurOlxDNyBA5HoIA",
+    "img": "logo_nwrc.webp",
+    "quote": ""
+},
+{
+    "id": 18,
+    "name": "The Secret Rum Bar",
+    "url": "https://www.secretrumbar.com",
+    "img": "logo_tsrb.webp",
+    "quote": ""
+},
+{
+    "id": 19,
+    "name": "Hogshead - Der Whisky Blog",
+    "url": "https://hogshead-whisky.blogspot.com",
+    "img": "logo_h_twb.webp",
+    "quote": ""
+},
+{
+    "id": 20,
+    "name": "RumRecenze.cz",
+    "url": "https://rumrecenze.cz",
+    "img": "logo_rumrecenze.webp",
+    "quote": ""
+},
+{
+    "id": 21,
+    "name": "Wagemut Taste Academy",
+    "url": "https://www.youtube.com/channel/UCfCtmvooP0taXajNP4_5BUg",
+    "img": "logo_wta.webp",
+    "quote": ""
+},
+{
+    "id": 22,
+    "name": "Rhum & Bourbon",
+    "url": "https://rhum-bourbon.com",
+    "img": "logo_rhum_bourbon.webp",
+    "quote": ""
+},
+{
+    "id": 23,
+    "name": "The Rum Barrel Blog",
+    "url": "https://therumbarrel.co.uk",
+    "img": "logo_therumbarreluk.webp",
+    "quote": ""
+},
+{
+    "id": 24,
+    "name": "Memphis Rum Club",
+    "url": "https://memphisrum.club",
+    "img": "logo_memphis.webp",
+    "quote": ""
+},
+{
+    "id": 25,
+    "name": "Rum nagykövet",
+    "url": "https://rumnagykovet.hu",
+    "img": "logo_rumnagykoevet.webp",
+    "quote": ""
+},
+{
+    "id": 26,
+    "name": "Rumtastisch",
+    "url": "https://www.rumtastisch.de",
+    "img": "logo_rumtastisch.webp",
+    "quote": ""
+},
+{
+    "id": 27,
+    "name": "Alkotip",
+    "url": "https://alkotip.cz/",
+    "img": "logo_alkotip.webp",
+    "quote": ""
+},
+{
+    "id": 28,
+    "name": "Rhummer",
+    "url": "https://www.rhummer.it",
+    "img": "logo_rhummerit.webp",
+    "quote": ""
+},
+{
+    "id": 29,
+    "name": "The Auditor Reviews",
+    "url": "https://theauditorreviews.com",
+    "img": "logo_theauditorreviews.webp",
+    "quote": ""
+},
+{
+    "id": 30,
+    "name": "RumRock",
+    "url": "https://www.rumrock.cz",
+    "img": "logo_rumrock.webp",
+    "quote": ""
+},
+{
+    "id": 31,
+    "name": "Curious Spirits",
+    "url": "https://www.curiousspirits.net",
+    "img": "logo_curiousspirits.webp",
+    "quote": ""
+},
+{
+    "id": 32,
+    "name": "WhiskyNotes",
+    "url": "https://www.whiskynotes.be",
+    "img": "logo_whiskynotes.webp",
+    "quote": ""
+}]

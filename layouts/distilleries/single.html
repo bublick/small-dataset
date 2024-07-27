@@ -1,0 +1,173 @@
+{{ define "main" }}
+{{ $t := debug.Timer "Single Distillery" }}
+<article>
+        <div class="container mt-3">
+                <nav class="breadcrumb">
+                        <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+                                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                                        <a class="main-link" itemprop="item" href="/"><span itemprop="name">Home</span></a>
+                                        <meta itemprop="position" content="1">
+                                </li>
+                                <li class="breadcrumb-arrow">›</li>
+                                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                                        <a class="main-link" itemprop="item" href="/countries/"><span itemprop="name">Countries</span></a>
+                                        <meta itemprop="position" content="2">
+                                </li>
+                                <li class="breadcrumb-arrow">›</li>
+                                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                                        <a class="main-link" itemprop="item" href={{ printf "/countries/country-%s" .Params.country.path }}><span itemprop="name">{{ .Params.country.en }}</span></a>
+                                        <meta itemprop="position" content="3">
+                                </li>
+                                <li class="breadcrumb-arrow">›</li>
+                                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                                        <p class="text-block"><span itemprop="name">{{ .Params.distillery }}</span></p>
+                                        <meta itemprop="position" content="4">
+                                </li>
+                        </ol>
+                </nav>
+
+                <h1 class="mt-3">{{ .Params.distillery }}</h1>
+
+                {{ $distillery := .Params.slug }}
+
+                {{ $rums_of_distillery := dict }}
+                {{ $rums := dict }}
+                {{ $rums = partialCached "cached_rums_with_db_id.html" . }}
+                {{ range $rums }}
+                        {{ if eq .basics_distillery_path $distillery }}
+                                {{ $singleRum := dict "rxid" .rxid 
+                                        "rumFilename" .rumFilename
+                                        "id_databaseRumID" .id_databaseRumID
+                                        "refs_imageURLs" .refs_imageURLs
+                                        "rxid_number" .rxid_number 
+                                        "basics_fullName" .basics_fullName
+                                        "basics_shortName" .basics_shortName
+                                        "basics_title" .basics_title
+                                        "basics_description" .basics_description
+                                        "basics_distillery_path" .basics_distillery_path
+                                        "title" .title
+                                        "country_code" .country_code 
+                                        "ratingsCount" .ratingsCount
+                                        "ratingsMedian" .ratingsMedian 
+                                        "rum_count" .rum_count 
+                                        "review_short" .review_short
+                                        "reviews_len" .reviews_len
+                                        "top_review_comment" .top_review_comment
+                                        "top_review_username" .top_review_username
+
+                                        "url" .url
+                                }}
+                                {{ $rums_of_distillery = merge $rums_of_distillery (dict (string .rxid) $singleRum) }}
+                        {{ end }}
+                {{ end }}
+                
+                <div class="row">
+                        <div class="col-12 col-md-6 mt-2">
+                                <p class="text-block mb-1">There are <b>{{ lang.FormatNumberCustom 0 (len $rums) }} rums</b> from the {{ .Params.distillery }} distillery in the RumX database.</p>
+                                <a class="btn btn-secondary" href={{ printf "/search/?q=%s" .Params.distillery }}>Show all {{ .Params.distillery }} rums</a>
+                        </div>
+            
+                        {{ if .Params.editorial }}
+                        <div class="col-12 col-md-6 mt-2">
+                                <div class="description-read-more" style="--line-clamp: 3">
+                                        <input id="description-read-more-checkbox" type="checkbox" class="description-read-more__checkbox" aria-hidden="true">
+                                        <p class="description-read-more__text text-block mb-1">{{ .Params.editorial.text }}</p>
+                                        <label for="description-read-more-checkbox" class="description-read-more__label main-link" data-read-more="Read more" data-read-less="See less" aria-hidden="true"></label>
+                                </div>
+                        </div>
+                        {{ end }}
+                </div>
+
+                {{ $top_rums_heading := printf "Top rated rums from %s" .Params.distillery }}
+                {{ partial "top_rated_list_in_countries_dict.html" (dict "rums" $rums_of_distillery "heading" $top_rums_heading) }}
+
+                {{ if gt .Params.ratings.ratingsCount 0 }}
+                        <hr class="hr mt-5" />
+                        <div class="row">
+                        <div class="col-12 col-lg-4">
+                                <div class="detail-margin mb-3">
+                                {{ partial "rating_overall.html" (dict "ctx" .Params "includeRatingItemprops" true) }}
+                                {{ partial "rating_barchart.html" . }}
+                                </div>
+                        </div>
+                        <div class="col-12 col-lg-8">
+                                <div class="detail-margin">
+                                <h2>Flavour profile of {{ .Params.country_name }}</h2>
+                                <h3>Most frequently mentioned flavors</h3>
+                                {{ partial "rating_overview.html" . }}
+                                </div>
+                        </div>
+                        </div>
+                {{ end }}
+
+                {{ if eq .Params.distillery "Caroni" }}
+                <hr class="hr mt-5" />
+                        {{ partialCached "buy_caroni_book.html" . }}
+                {{ end }}
+
+                {{ partial "forum_topics.html" (dict "search" .Params.distillery) }}
+
+                {{ if gt (len .Params.popular_bottlers) 0 }}
+                <hr class="hr mt-5" />
+                <div class="distillery-country-list">
+                        
+                        <h2>Popular independent bottlers of {{ .Params.distillery }}</h2>
+                        <ul class="mb-0">
+                                {{ $bottlers := .Params.popular_bottlers }}
+                                {{ $bottlers_by_count := sort .Params.popular_bottlers "rums" "desc"  }}
+
+                                {{ range $index, $bottler := $bottlers_by_count }}
+                                        {{ if lt $index site.Params.rumx.distillery_or_bottler_preview_count }}
+                                        <li class="arrow-li">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+                                                </svg>
+                                                {{ $path_to_bottler := printf "/bottlers/%s" $bottler.path }}
+                                                <a href={{ $path_to_bottler }}>{{ $bottler.name }}</a> <span class="count-badge badge badge-pill">{{ $bottler.rums }} {{ if eq $bottler.rums 1 }} rum {{ else }} rums {{ end }}</span>
+                                        </li>
+                                        {{ end }}
+                                {{ end }}
+
+                                {{ range $index, $bottler := $bottlers_by_count }}
+                                {{ if ge $index site.Params.rumx.distillery_or_bottler_preview_count }}
+                                <li class="further-links-li arrow-li" style="display:none;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+                                        </svg>
+                                        {{ $path_to_bottler := printf "/bottlers/%s" $bottler.path }}
+                                        <a href={{ $path_to_bottler }}>{{ $bottler.name }}</a> <span class="count-badge badge badge-pill">{{ $bottler.rums }} {{ if eq $bottler.rums 1 }} rum {{ else }} rums {{ end }}</span>
+                                </li>
+                                {{ end }}
+                        {{ end }}
+                        </ul>
+                        {{ if gt (len $bottlers) site.Params.rumx.distillery_or_bottler_preview_count }}
+                        <button id="further-links-show-more-button" type="button" class="btn btn-link">Show all</button>
+                        {{ end }}
+
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+                        <script>
+                                $('#further-links-show-more-button').click(function () {
+                                        $(".further-links-li").css("display", "block");;
+                                        $("#further-links-show-more-button").css("display", "none");
+                                });
+                        </script>
+                </div>
+                {{ end }}
+
+                {{ partial "about_distillery.html" (dict "distillery" .Params) }}
+
+                {{ $all_rums_by_heading := printf "All rums from %s" .Params.distillery }}
+                {{ partial "all_rums_by.html" (dict "all_rums" $rums "heading" $all_rums_by_heading) }}
+
+                <div class="info-section container text-center">
+                        <p class="h4 text-uppercase text-color-secondary">{{ .Params.distillery }} in Your Pocket</p>
+                
+                        <p class="text-block">Intrigued by the unique flavors of {{ .Params.distillery }} rums? The RumX app takes your rum exploration to the next level. Discover even more about {{ .Params.distillery }} and other esteemed distilleries, complete with <b>detailed tasting notes</b>, <b>expert reviews</b>, and a <b>vibrant community</b> of fellow rum lovers. For the true {{ .Params.distillery }} experience, you won't want to miss our app.</p>
+                        
+                        <a class="intro-button-download-app-store" href="{{ site.Params.rumx.app_store_url }}"><img class="dl-image" src="/assets/images/download-app-store.webp" alt="Download app on app store"></a>
+                        <a class="intro-button-download-google-play" href="{{ site.Params.rumx.google_play_url }}"><img class="dl-image" src="/assets/images/download-google-play.webp" alt="Download app on google play"></a>
+                </div>
+        </div>
+</article>
+{{ $t.Stop }}
+{{ end }}

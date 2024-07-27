@@ -1,0 +1,31 @@
+{{ $shops := dict }}
+{{ with $map := index site.Data.shop_items_by_rx .Params.rxid }}
+    {{ range $index, $el := $map }}
+        {{ $singleShop := dict "shop" $el.shop 
+                                "shop_link" $el.shop_link 
+                                "priceInEUR" $el.priceInEUR 
+                                "currency" $el.currency
+                                "discount" $el.discount 
+                                "ean" $el.ean 
+                                "id" $el.id 
+                                "isDifferencialTaxed" $el.isDifferencialTaxed 
+                                "isNew" $el.isNew
+                                "isVerified" $el.isVerified 
+                                "item_id" $el.item_id 
+                                "netPrice" $el.netPrice 
+                                "preorderAvailableFrom" $el.preorderAvailableFrom 
+                                "price" $el.price 
+                                "price_discounted" $el.price_discounted 
+                                "price_original" $el.price_original
+                                "price_string" $el.price_string 
+                                "quantity" $el.quantity 
+                                "rtn_id" $el.rtn_id 
+                                "rx_by_ean" $el.rx_by_ean 
+                                "taxCountryCode" $el.taxCountryCode 
+                                "volume" $el.volume 
+        }}
+        {{ $shops = merge $shops (dict (string $index) $singleShop) }}
+    {{ end }}
+{{ end }}
+
+{{ return $shops }}

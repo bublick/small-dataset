@@ -1,0 +1,867 @@
+{{ define "main" }}
+{{ $t := debug.Timer "Single Rum" }}
+{{ $shops := dict }}
+{{ $affiliate_shops := dict }}
+{{ $shops = partialCached "cached_shops_dict.html" .}}
+
+<article data-pagefind-body>
+  {{ if .Params.refs_dynamicLink }}
+  <div class="open-in-app-banner" data-pagefind-ignore>
+    <div class="row">
+      <div class="col-1">
+        <img class="open-in-app-banner-logo" src="/assets/images/app_logo_round_border.webp" alt="RumX app logo"
+          loading="lazy">
+      </div>
+      <div class="col">
+        <p class="open-in-app-banner-title">RumX</p>
+        <p class="open-in-app-banner-subtitle text-muted">Open in the RumX app</p>
+      </div>
+      <div class="col-3 pt-1">
+        <a href={{ .Params.refs_dynamicLink }}><span class="badge badge-pill badge-cta text-uppercase">Open</span></a>
+      </div>
+    </div>
+  </div>
+  {{ end }}
+
+  <div {{ if or (ge (len $shops) 0) (ge .Params.ratings.ratingsCount 0) }}itemscope
+    itemtype="https://schema.org/Product" {{ end }}>
+    <meta itemprop="description" content="{{ .Params.basics_fullName }}">
+    <meta itemprop="mpn" content="{{ .Params.rxid }}">
+    {{ if ge (len .Params.eans) 0 }}
+    <meta itemprop="gtin" content="{{ index .Params.eans 0 }}">{{ end }}
+
+    <div class="container mt-3">
+      {{ $path_to_country := printf "/countries/%s/" .Params.basics_country.path }}
+      {{ $path_to_bottler := printf "/bottlers/%s/" .Params.basics_independentBottler.path}}
+      {{ $path_to_distillery := printf "/distilleries/%s/" .Params.basics_distillery.path }}
+
+      <nav class="breadcrumb" data-pagefind-ignore>
+        <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+          <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <a class="main-link" itemprop="item" href="/"><span itemprop="name">Home</span></a>
+            <meta itemprop="position" content="1">
+          </li>
+          <li class="breadcrumb-arrow">›</li>
+          <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <a class="main-link" itemprop="item" href={{ $path_to_country }}><span itemprop="name">{{
+                .Params.basics_country.en }}</span></a>
+            <meta itemprop="position" content="2">
+          </li>
+          <li class="breadcrumb-arrow">›</li>
+          {{ if .Params.basics_distillery.name }}
+          <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <a class="main-link" itemprop="item" href={{ $path_to_distillery }}><span itemprop="name">{{
+                .Params.basics_distillery.name }}</span></a>
+            <meta itemprop="position" content="3">
+          </li>
+          <li class="breadcrumb-arrow">›</li>
+          <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <p class="text-block"><span itemprop="name">{{ .Params.rxid }}</span></p>
+            <meta itemprop="position" content="4">
+          </li>
+          {{ else }}
+          <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+            <p class="text-block"><span itemprop="name">{{ .Params.rxid }}</span></p>
+            <meta itemprop="position" content="3">
+          </li>
+          {{ end }}
+        </ol>
+      </nav>
+
+      <div class="row">
+        <div class="col-12 col-sm-12 col-md-4" data-pagefind-ignore>
+          <div id="carouselExampleControls" class="carousel slide" data-bs-interval="false">
+            <div class="carousel-inner">
+              {{ if ge (len .Params.refs_imageURLs) 0 }}
+              <meta itemprop="image" content="{{ index .Params.refs_imageURLs 0 }}">
+              {{ $img_index := 0 }}
+              {{ $refs_imageCopyrights := .Params.refs_imageCopyrights }}
+              {{ $ratingsCount := .Params.ratings.ratingsCount }}
+              {{ $ratingsMedian := .Params.ratings.ratingsMedian }}
+              {{ range $img_index, $image := .Params.refs_imageURLs }}
+              <div class="carousel-item">
+                <img data-pagefind-meta="image[src]" class="gallery-rum-image" fetchpriority="high" src="{{ $image }}"
+                  alt="High resolution image of the bottle" {{if gt $img_index 0}} loading="lazy" {{ end }}>
+                {{ if eq (index $refs_imageCopyrights 0) "Rum Auctioneer" }}
+                <div class="carousel-caption">
+                  <img class="carousel-caption-watermark" src="/assets/images/shops/watermark_rumauctioneer.webp"
+                    alt="Rum Auctioneer watermark" loading="lazy">
+                </div>
+                {{ end }}
+                {{ if gt $ratingsCount 10 }}
+                {{ if gt $ratingsMedian 90 }}
+                <div class="position-absolute top-0 end-0">
+                  <img class="badge-image" src="/assets/images/badge_excellent.webp" alt="Badge for an excellent rating"
+                    loading="lazy">
+                </div>
+                {{ else if gt $ratingsMedian 80 }}
+                <div class="position-absolute top-0 end-0">
+                  <img class="badge-image" src="/assets/images/badge_verygood.webp" alt="Badge for an very good rating"
+                    loading="lazy">
+                </div>
+                {{ end }}
+                {{ end }}
+              </div>
+              {{ end }}
+              {{ else }}
+              <div class="carousel-item active">
+                <img class="gallery-rum-image" src="/assets/images/bottle_bg.webp"
+                  alt="Placeholder, because no picture of the bottle available" loading="lazy">
+              </div>
+              {{ end }}
+            </div>
+            {{ if gt (len .Params.refs_imageURLs) 1 }}
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+              data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+              data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+            {{ end }}
+          </div>
+
+          <script>
+            document.getElementsByClassName('carousel-item')[0].classList.add('active');
+          </script>
+        </div>
+
+        <div class="col-12 col-sm-12 col-md-8">
+          <h1 class="h2 mt-3"><span itemprop="name">{{ .Params.basics_fullName }}</span></h1>
+
+          <div class="mt-2">
+            <span class="taste-badge characteristic-badge badge" data-pagefind-meta="rxid">{{ .Params.rxid }}</span>
+            {{ if gt .Params.ratings.ratingsCount 0 }}
+            <a href="#community-reviews"><span class="taste-badge characteristic-badge badge" data-pagefind-ignore>{{
+                .Params.ratings.text }}</span></a>
+            {{ end }}
+            {{ if .Params.basics_category }}
+            <span class="taste-badge characteristic-badge badge" data-pagefind-ignore>{{ .Params.basics_category
+              }}</span>
+            {{ end }}
+            {{ if .Params.prod_is_single_cask }}
+            <span class="taste-badge characteristic-badge badge" data-pagefind-ignore>Single Cask</span>
+            {{ end }}
+            {{ if .Params.basics_limitedEditionBottles }}
+            <span class="taste-badge characteristic-badge badge" data-pagefind-ignore>{{ lang.FormatNumberCustom 0
+              .Params.basics_limitedEditionBottles | default 0 }} bottles</span>
+            {{ end }}
+            {{ if .Params.price_range }}
+            <a href="#shops"><span class="taste-badge characteristic-badge badge" data-pagefind-ignore>{{
+                .Params.price_range }}</span></a>
+            {{ end }}
+          </div>
+
+          {{ if or (gt .Params.ratings.ratingsCount 0) (gt (len $shops) 0) }}
+          <div class="row mb-2 py-2" data-pagefind-ignore>
+            {{ if gt .Params.ratings.ratingsCount 0 }}
+            <div class="col-12 col-sm-6">
+              <a href="#community-reviews">
+                <div class="card p-3 mt-2">
+                  {{ partial "rating_overall.html" (dict "ctx" .Params "includeRatingItemprops" false "showAsLink" true)}}
+                </div>
+              </a>
+            </div>
+            {{ end }}
+
+            {{ if gt (len $shops) 0 }}
+            <div class="col-12 col-sm-6">
+              <a href="#shops">
+                <div class="card p-3 mt-2">
+                  <div>
+                    {{ $shopByPrice := sort $shops "priceInEUR" }}
+                    {{ $minimalPrice := lang.FormatNumberCustom 2 (index (index $shopByPrice 0) "priceInEUR") }}
+                    <span class="overall-rating-text h2">{{ if gt (len $shops) 1 }}<span class="fw-normal">From</span>
+                      {{ end }}{{ $minimalPrice }} €</span>
+                    <span class="main-link overall-rating-max ms-3"><span>{{ len $shops }}</span> {{ if gt (len $shops)
+                      1 }}offers{{ else }}offer{{ end }}</span>
+                  </div>
+                  <b class="h4 text-muted mt-1 mb-0">Marketplace</b>
+                </div>
+              </a>
+            </div>
+            {{ end }}
+          </div>
+          {{ end }}
+
+          {{ if or .Params.ai.review_data.review_short .Params.ai.description }}
+          <div class="mt-3" data-pagefind-ignore>
+            {{ if .Params.ai.review_data.review_short }}
+            <b class="mb-1">“{{ .Params.ai.review_data.review_short }}”</b>
+            {{ end }}
+
+            {{ if .Params.ai.description }}
+            <div class="description-read-more mb-3" style="--line-clamp: 2">
+              <input id="description-read-more-checkbox" type="checkbox" class="description-read-more__checkbox"
+                aria-hidden="true">
+              <p class="description-read-more__text text-block mb-1">{{ .Params.ai.description }}</p>
+              <label for="description-read-more-checkbox" class="description-read-more__label main-link"
+                data-read-more="Read more" data-read-less="See less" aria-hidden="true"></label>
+            </div>
+            {{ end }}
+
+            <a class="intro-button-download-app-store" href="{{ $.Site.Params.rumx.app_store_url }}"><img class="dl-image"
+                src="/assets/images/download-app-store.webp" alt="Download app on app store"></a>
+            <a class="intro-button-download-google-play" href="{{ $.Site.Params.rumx.google_play_url }}"><img
+                class="dl-image" src="/assets/images/download-google-play.webp" alt="Download app on google play"></a>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+
+      {{ $rums_with_db_id := dict }}
+      {{ $rums_with_db_id = partialCached "cached_rums_with_db_id.html" . }}
+
+      {{ $similar_rums := dict }}
+      {{ $db_id := .Params.id_databaseRumID }}
+      {{ $recommendationsIdLst := .Params.recommendations }}
+
+      <!-- { { range $recommendationsIndx, $recommendationsId := $recommendationsIdLst} }
+        { { range $rum_with_db_id := $rums_with_db_id } }
+          { { if and (eq $rum_with_db_id.id_databaseRumID $recommendationsId) (ge $recommendationsIndx $.Site.Params.rumx.similar_rums_count) } }
+            { { $similar_rum := dict "rxid" $rum_with_db_id.rxid 
+                              "title" $rum_with_db_id.title 
+                              "ratingsCount" $rum_with_db_id.ratingsCount 
+                              "ratingsMedian" $rum_with_db_id.ratingsMedian 
+                              "rum_count" $rum_with_db_id.rum_count 
+                              "url" $rum_with_db_id.url 
+                              "refs_imageURLs" $rum_with_db_id.refs_imageURLs
+            } }
+            { { $similar_rums = merge $similar_rums (dict (string (len $similar_rums)) $similar_rum) } }
+          { { end } }
+        { { end } }
+      { { end } } -->
+
+      {{ $all_bottles := 0 }}
+      {{ $closed_bottles := 0 }}
+      {{ $opened_bottles := 0 }}
+      {{ $empty_bottles := 0 }}
+
+      {{ if .Params.stats.closedBottles }}
+      {{ $closed_bottles = .Params.stats.closedBottles }}
+      {{ end }}
+      {{ if .Params.stats.openedBottles }}
+      {{ $opened_bottles = .Params.stats.openedBottles }}
+      {{ end }}
+      {{ if .Params.stats.emptyBottles }}
+      {{ $empty_bottles = .Params.stats.emptyBottles }}
+      {{ end }}
+      {{ $all_bottles := add $all_bottles $closed_bottles $opened_bottles $empty_bottles }}
+
+      <div id="table-of-contents" class="highlighted-area mt-5 px-2" data-pagefind-ignore>
+        <h2 class="ps-2 mb-1">Navigation</h2>
+        <ul class="mb-0 ps-2">
+          {{ if gt (len $shops) 0 }}
+          <li class="list-unstyled"><a class="main-link" href="#shops">Shop offers</a></li>
+          {{ end }}
+          {{ if gt .Params.ratings.ratingsCount 0 }}
+          <li class="list-unstyled"><a class="main-link" href="#taste-profile">Taste profile</a></li>
+          {{ end }}
+          {{ if gt (len .Params.reviews) 0 }}
+          <li class="list-unstyled ms-3"><a class="main-link" href="#community-reviews">Community reviews</a></li>
+          {{ end }}
+          {{ if gt (len .Params.refs_blogs) 0 }}
+          <li class="list-unstyled ms-3"><a class="main-link" href="#blogs">Blog reviews</a></li>
+          {{ end }}
+          <li class="list-unstyled"><a class="main-link" href="#specs">Rum details</a></li>
+          {{ if or .Params.market_value (gt $all_bottles 0) }}
+          <li class="list-unstyled"><a class="main-link" href="#community-collection">Price trend</a></li>
+          {{ end }}
+          {{ if gt (len $similar_rums) 0 }}
+          <li class="list-unstyled"><a class="main-link" href="#similar-rums">Similar rums</a></li>
+          {{ end }}
+        </ul>
+      </div>
+
+      <hr class="hr mt-5" />
+
+      <div class="shops-blogs detail-margin" data-pagefind-ignore>
+        <a class="anchor" id="shops"></a>
+
+        <h2 id="where-to-buy">Where can I buy this rum?</h2>
+
+        {{ if eq (len $shops) 0 }}
+        <p class="text-block text-muted">Sorry, no offers available at the moment. Get the <b>free RumX app</b> and
+          discover exciting alternatives: <a class="main-link" href="/app/#marketplace">Download now!</a></p>
+        {{ else }}
+        {{$priceKey := "priceInEUR"}}
+        <div itemprop="offers" itemscope itemtype="https://schema.org/AggregateOffer">
+          {{ if gt (len $shops) 1 }}
+          {{ $cheapestShopPrice := index (sort $shops $priceKey) 0 $priceKey}}
+          {{ $expensiveShopPrice := index (sort $shops $priceKey) (sub (len $shops) 1) $priceKey}}
+          <p class="text-block mb-0"><b><span itemprop="offerCount">{{ len $shops }}</span> shop offers</b> available
+            from <b><span itemprop="lowPrice">{{ $cheapestShopPrice }}</span> €</b> to <b><span itemprop="highPrice">{{
+                $expensiveShopPrice }}</span> €</b>:</p>
+          {{ else }}
+          {{ $cheapestShopPrice := index (sort $shops $priceKey) 0 $priceKey}}
+          <p class="text-block mb-0"><b><span itemprop="offerCount">1</span> shop offer</b> available for <b><span
+                itemprop="lowPrice">{{ $cheapestShopPrice }}</span> €</b>:</p>
+          {{ end }}
+          <meta itemprop="priceCurrency" content="EUR">
+        </div>
+        {{ end }}
+
+        <div class="row">
+          {{ if gt (len $shops) 0 }}
+          <div class="rum-shops col-12 col-md-5 mt-2">
+            {{ $relevant_shops := "" }}
+            {{ if gt (len $affiliate_shops) 0 }}
+            {{ $relevant_shops = $affiliate_shops }}
+            {{ else }}
+            {{ $relevant_shops = $shops }}
+            {{ end }}
+
+            {{ partialCached "firestore_logging.html" . }}
+
+            <ul class="list-group list-unstyled">
+              {{ $displayed_offers_count := 0 }}
+
+              {{ range $rShopIndex, $rShop := $relevant_shops }}
+              {{ if lt $rShopIndex 4 }}
+              {{ if ne $rShop.shop "Armagnac.de" }}
+              {{ $displayed_offers_count = add $displayed_offers_count 1 }}
+
+              {{ $shop_obj := dict }}
+              {{ range where $.Site.Data.sortedShops "shopName" $rShop.shop }}
+              {{ $shop_obj = merge $shop_obj (dict "shopLogo" .shopLogo "country_code" .country_code "is_affiliate"
+              .is_affiliate)}}
+              {{ end }}
+              <li>
+                <a class="card p-2 mb-2" href="{{ $rShop.shop_link }}" target="_blank" rel="noopener nofollow"
+                  onclick='logReferal({{ $rShop }})'>
+                  <div class="row align-items-center">
+                    <div class="col-2">
+                      <img src="/assets/images/shops/{{ $shop_obj.shopLogo }}"
+                        alt="Logo of the partner shop {{ $rShop.shop }} , which leads to this offer" width="50"
+                        height="50" loading="lazy">
+                    </div>
+                    <div class="col-6">
+                      <span class="h4">{{ $rShop.shop }}</span><br>
+                      <span class="shop-badge shop-country-badge badge">{{ $shop_obj.country_code }}</span>
+                      {{ if ne $rShop.volume "" }}<span class="shop-badge characteristic-badge badge">{{ $rShop.volume
+                        }}l</span>{{ end }}
+                      {{ if ne $shop_obj.is_affiliate "" }}<span
+                        class="shop-badge characteristic-badge badge">Ad</span>{{ end }}
+                    </div>
+                    <div class="col-4 text-end">
+                      <div class="badge badge-primary"><span class="h4">{{ math.Round $rShop.priceInEUR }} €</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              {{ end }}
+              {{ end }}
+              {{ end }}
+
+              {{ $more_offers_count := sub (len $relevant_shops) $displayed_offers_count }}
+              {{ if gt $more_offers_count 0 }}
+              <li>
+                <a class="highlight-card card p-2 mb-2" href="/app/#marketplace">
+                  <div class="row align-items-center">
+                    <div class="col-2">
+                      <img src="/assets/images/rx_prefix.webp" alt="Logo of the RumX mobile app" width="50" height="37"
+                        loading="lazy">
+                    </div>
+                    <div class="col-10">
+                      <span class="h4">{{ $more_offers_count }} additional offers</span><br>
+                      <span class="text-muted small">in the free RumX app</span>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              {{ end }}
+            </ul>
+          </div>
+          {{ end }}
+
+          {{ if .Params.ai.pros }}
+          {{ if gt (len $shops) 0 }}<div class="col-0 col-md-1"></div>{{ end }}
+          <div class="col-12 col-md-6 mt-2">
+            <div class="pros-container highlighted-area highlights-card px-2 mb-3">
+              <h3>Highlights</h3>
+
+              {{ $index := 1 }}
+              <ul class="pros ps-0 mb-0" itemprop="positiveNotes" itemtype="https://schema.org/ItemList" itemscope>
+                {{ range $pro := .Params.ai.pros }}
+                <li>
+                  <div itemprop="itemListElement" itemtype="https://schema.org/ListItem" itemscope>
+                    <meta itemprop="position" content="{{ $index }}" />
+                    <meta itemprop="name" content="{{ . }}" />
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="16"
+                      height="16"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                      <path fill="#02c39a"
+                        d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z" />
+                    </svg>
+                    {{ $pro }}
+                  </div>
+                </li>
+                {{ $index = add $index 1 }}
+                {{ end }}
+              </ul>
+            </div>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+
+      {{ if gt (len $shops) 0 }}
+      <p class="text-block text-muted mt-1 mb-1" data-pagefind-ignore>Get the best shopping experience by downloading
+        the <b>free</b> RumX app. <b>Compare offers</b> and never miss a good deal again: <a class="main-link"
+          href="/app/#marketplace">Download now!</a></p>
+      {{ end }}
+
+      <p class="text-block text-muted" data-pagefind-ignore>Run your own online rum shop? Team up with RumX and offer
+        your bottles to thousands of rum enthusiasts. <a class="main-link" href="mailto:{{ $.Site.Params.email }}">Contact
+          us!</a></p>
+
+      {{ if eq .Params.basics_distillery.name "Caroni" }}
+      {{ partialCached "buy_caroni_book.html" . }}
+      {{ end }}
+
+      <hr class="hr mt-5" />
+
+      <div class="detail-margin" data-pagefind-ignore>
+        <a class="anchor" id="taste-profile"></a>
+        <h2>How does this rum taste?</h2>
+        {{ if .Params.ai.review_data.review }}
+        <p class="highlighted-area text-block mb-3">{{ .Params.ai.review_data.review }}</p>
+        {{ end }}
+
+        {{ if or (gt (len .Params.ratings.nosingTagsFrequency) 0) (gt (len .Params.ratings.tasteTagsFrequency) 0) (gt
+        (len .Params.ratings.finishTagsFrequency) 0) }}
+        <div class="mt-4">
+          <h3>Most frequently mentioned flavors</h3>
+           {{ partial "rating_overview.html" . }}
+        </div>
+        {{ end }}
+
+        <div class="rum-community-rating mt-4">
+          <a class="anchor" id="community-reviews"></a>
+          <h3 class="mb-0">Community reviews</h3>
+          {{ if eq .Params.ratings.ratingsCount 0 }}
+          <p>Not yet rated by the community</p>
+          {{ else }}
+          <div class="row">
+            <div class="col-12 col-md-4">
+              {{ partial "rating_barchart.html" . }}
+            </div>
+            <div class="col-12 col-md-8 pt-4">
+              {{ partial "rating_overall.html" (dict "ctx" .Params "includeRatingItemprops" true) }}
+              <a class="btn btn-primary mt-3 mb-3" href="/app/#tasting-assistant">Write a review</a>
+            </div>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+
+      {{ if gt (len .Params.reviews) 0 }}
+      <div class="community-review-list" data-pagefind-ignore>
+        <div class="comment-container">
+          {{ range $reviewIndex, $review := .Params.reviews }}
+          {{ if lt $reviewIndex $.Site.Params.rumx.community_reviews_preview_count }}
+          {{ partial "rum_user_review.html" (dict "review" $review) }}
+          {{ end }}
+          {{ end }}
+
+          {{ range $reviewIndex, $review := .Params.reviews }}
+          {{ if and (gt $reviewIndex $.Site.Params.rumx.community_reviews_preview_count) (lt $reviewIndex
+          $.Site.Params.rumx.community_reviews_extended_count) }}
+          {{ partial "rum_user_review.html" (dict "review" $review "hide" true) }}
+          {{ end }}
+          {{ end }}
+        </div>
+
+        {{ if ge (len .Params.reviews) (.Site.Params.rumx.community_reviews_preview_count) }}
+        <button id="user-reviews-show-more-button" type="button" class="btn btn-secondary">Show more reviews</button>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+          $('#user-reviews-show-more-button').click(function () {
+            $(".user-review-toggle").css("display", "block");;
+            $("#user-reviews-show-more-button").css("display", "none");
+          });
+        </script>
+        {{ end }}
+
+        <div class="user-review-toggle" style="display:none;">
+          <p class="text-block text-muted mb-2">These are only some of the most popular comments from the community.
+            Want to know more about this rum?</p>
+          <p><a class="btn btn-primary" href="/app/">View all reviews in the app</a></p>
+        </div>
+      </div>
+      {{ end }}
+
+      <div class="rum-blog-articles detail-margin mt-5" data-pagefind-ignore>
+        <a class="anchor" id="blogs"></a>
+        <h3>Expert reviews</h3>
+
+        {{ if eq (len .Params.refs_blogs) 0 }}
+        <p class="text-block mb-0">No blog articles available yet.</p>
+        {{ else }}
+
+        <div class="col-12 col-md-4">
+          <ul class="list-group list-unstyled">
+            {{ range $blog := .Params.refs_blogs }}
+
+
+            {{ $blogger := dict }}
+            {{ range where $.Site.Data.bloggers "name" $blog.name }}
+            {{ $blogger = merge $blogger (dict "id" .id "name" .name "url" .url "img" .img "quote" .quote) }}
+            {{ end }}
+
+            {{ $source := $blog.url}}
+            {{ $source = replaceRE "^https?://([^/]+).*" "$1" $source }}
+
+            <li>
+              <a class="card p-2 mb-2" href="{{ $blog.url }}" rel="noopener nofollow" target="_blank">
+                <div class="row align-items-center">
+                  <div class="col-2">
+                    <img src="/assets/images/bloggers/{{ $blogger.img }}"
+                      alt="Logo of the blog partner {{ $blog.name }}, which leads to his review" width="50" height="50"
+                      loading="lazy">
+                  </div>
+                  <div class="col-8">
+                    <span class="pricing">{{ $blogger.name }}</span><br>
+                    <span class="text-muted small">{{ $source }}</span>
+                  </div>
+                  <div class="col-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 512 512">
+                      <path
+                        d="M320 0c-17.7 0-32 14.3-32 32s14.3 32 32 32h82.7L201.4 265.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L448 109.3V192c0 17.7 14.3 32 32 32s32-14.3 32-32V32c0-17.7-14.3-32-32-32H320zM80 32C35.8 32 0 67.8 0 112V432c0 44.2 35.8 80 80 80H400c44.2 0 80-35.8 80-80V320c0-17.7-14.3-32-32-32s-32 14.3-32 32V432c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16V112c0-8.8 7.2-16 16-16H192c17.7 0 32-14.3 32-32s-14.3-32-32-32H80z" />
+                    </svg>
+                  </div>
+                </div>
+              </a>
+            </li>
+            {{ end }}
+          </ul>
+        </div>
+
+        {{ end }}
+
+        <p class="text-muted mt-2 mb-3">Are you a blogger and want to publish your articles for free on RumX to boost
+          your reach? <a class="main-link" href="mailto:{{ .Site.Params.email }}">Contact us!</a></p>
+      </div>
+
+      <hr class="hr mt-5" />
+
+      <div class="rum-basic-data detail-margin">
+        <a class="anchor" id="specs"></a>
+        <h2 data-pagefind-ignore>What are the key facts about this rum?</h2>
+
+        <div>
+          <div class="rum-facts row align-items-center">
+            <div class="fact col-6 col-sm-4 col-md-3" data-pagefind-ignore>
+              <div class="fact-info mt-2" itemprop="countryOfOrigin" itemtype="https://schema.org/Country" itemscope>
+                <span class="text-muted">Country</span><br>
+                <meta itemprop="name" content="{{ .Params.basics_country.en }}"><a class="main-link" itemprop="url"
+                  href="{{ $path_to_country }}">{{ .Params.basics_country.en }}</a>
+              </div>
+            </div>
+
+            {{ if ne .Params.basics_distillery.name "" }}
+            <div class="fact col-6 col-sm-4 col-md-3">
+              <div class="fact-info mt-2" itemprop="manufacturer" itemtype="https://schema.org/Organization" itemscope>
+                <span class="text-muted" data-pagefind-ignore>Distillery</span><br>
+                <meta itemprop="name" content="{{ .Params.basics_distillery.name }}"><a class="main-link" itemprop="url"
+                  href="{{ $path_to_distillery }}" data-pagefind-meta="distillery">
+                  {{ .Params.basics_distillery.name }}</a>
+              </div>
+            </div>
+            {{ end }}
+
+            {{ if ne .Params.basics_independentBottler.name "" }}
+            <div class="fact col-6 col-sm-4 col-md-3">
+              <div class="fact-info mt-2" itemprop="brand" itemtype="https://schema.org/Brand" itemscope>
+                <span class="text-muted" data-pagefind-ignore>Bottler</span><br>
+                <meta itemprop="name" content="{{ .Params.basics_independentBottler.name }}">
+                <a class="main-link" itemprop="url" href="{{ $path_to_bottler }}" data-pagefind-meta="bottler">
+                  {{ .Params.basics_independentBottler.name }}</a>
+              </div>
+            </div>
+            {{ end }}
+
+            {{ if .Params.basics_brand }}
+            <div class="fact col-6 col-sm-4 col-md-3">
+              <div class="fact-info mt-2">
+                <span class="text-muted" data-pagefind-ignore>Brand</span><br>
+                {{ .Params.basics_brand }}
+              </div>
+            </div>
+            {{ end }}
+
+            <div class="fact col-6 col-sm-4 col-md-3" data-pagefind-ignore>
+              <div class="fact-info mt-2">
+                <span class="text-muted">RumX ID</span><br>
+                {{ .Params.rxid }}
+              </div>
+            </div>
+
+            {{ if .Params.basics_alcVol }}
+            <div class="fact col-6 col-sm-4 col-md-3">
+              <div class="fact-info mt-2">
+                <span class="text-muted" data-pagefind-ignore>ABV</span><br>
+                <span data-pagefind-meta="abv">
+                  {{ .Params.basics_alcVol }}
+                </span>
+              </div>
+            </div>
+            {{ end }}
+
+            {{ if .Params.basics_category }}
+            <div class="fact col-6 col-sm-4 col-md-3" data-pagefind-ignore>
+              <div class="fact-info mt-2">
+                <span class="text-muted">Category</span><br>
+                {{ .Params.basics_category }}
+              </div>
+            </div>
+            {{ end }}
+
+            {{ if .Params.basics_vintage }}
+            <div class="fact col-6 col-sm-4 col-md-3" data-pagefind-ignore>
+              <div class="fact-info mt-2">
+                <span class="text-muted">Vintage</span><br>
+                {{ .Params.basics_vintage }}
+              </div>
+            </div>
+            {{ end }}
+
+            {{ if .Params.basics_bottled }}
+            <div class="fact col-6 col-sm-4 col-md-3" data-pagefind-ignore>
+              <div class="fact-info mt-2">
+                <span class="text-muted">Bottled</span><br>
+                {{ .Params.basics_bottled }}
+              </div>
+            </div>
+            {{ end }}
+
+            {{ if .Params.basics_caskNumber }}
+            <div class="fact col-6 col-sm-4 col-md-3" data-pagefind-ignore>
+              <div class="fact-info mt-2">
+                <span class="text-muted">Cask number</span><br>
+                {{ .Params.basics_caskNumber }}
+              </div>
+            </div>
+            {{ end }}
+
+            {{ if .Params.prod_mark }}
+            <div class="fact col-6 col-sm-4 col-md-3" data-pagefind-ignore>
+              <div class="fact-info mt-2">
+                <span class="text-muted">Mark</span><br>
+                {{ .Params.prod_mark }}
+              </div>
+            </div>
+            {{ end }}
+
+            {{ if ne .Params.prod_material "Unknown" }}
+            <div class="fact col-6 col-sm-4 col-md-3" data-pagefind-ignore>
+              <div class="fact-info mt-2">
+                <span class="text-muted">Made from</span><br>
+                {{ .Params.prod_material }}
+              </div>
+            </div>
+            {{ end }}
+
+            {{ if ne .Params.prod_distillation "Unknown" }}
+            <div class="fact col-6 col-sm-4 col-md-3">
+              <div class="fact-info mt-2">
+                <span class="text-muted" data-pagefind-ignore>Distillation</span><br>
+                {{ .Params.prod_distillation }}
+              </div>
+            </div>
+            {{ end }}
+
+            {{ if .Params.prod_age_total }}
+            <div class="fact col-6 col-sm-4 col-md-3">
+              <div class="fact-info mt-2">
+                <span class="text-muted" data-pagefind-ignore>Age</span><br>
+                <span data-pagefind-meta="age">
+                  {{ .Params.prod_age_total }}
+                </span>
+              </div>
+            </div>
+            {{ end }}
+
+            {{ if .Params.basics_limitedEditionBottles }}
+            <div class="fact col-6 col-sm-4 col-md-3" data-pagefind-ignore>
+              <div class="fact-info mt-2">
+                <span class="text-muted">No. of bottles</span><br>
+                {{ .Params.basics_limitedEditionBottles }}
+              </div>
+            </div>
+            {{ end }}
+
+            {{ if .Params.bottle_volume }}
+            <div class="fact col-6 col-sm-4 col-md-3" data-pagefind-ignore>
+              <div class="fact-info mt-2">
+                <span class="text-muted">Bottle volume</span><br>
+                <span>{{ .Params.bottle_volume }}cl</span>
+              </div>
+            </div>
+            {{ end }}
+
+            {{ if .Params.price_range }}
+            <div class="fact col-6 col-sm-4 col-md-3" data-pagefind-ignore>
+              <div class="fact-info mt-2">
+                <span class="text-muted">Price range</span><br>
+                <span>{{ .Params.price_range }}</span>
+              </div>
+            </div>
+            {{ end }}
+
+            <div class="fact col-6 col-sm-4 col-md-3" data-pagefind-ignore>
+              <div class="fact-info mt-2">
+                <span class="text-muted">Type of spirit</span><br>
+                <span itemprop="category">Rum</span>
+              </div>
+            </div>
+
+            <span style="display:none" data-pagefind-meta="basics_title">
+              {{.Params.basics_title}}
+            </span>
+            <span style="display:none" data-pagefind-meta="basics_description">
+              {{.Params.basics_description}}
+            </span>
+            <span style="display:none" data-pagefind-meta="basics_shortName">
+              {{.Params.basics_shortName}}
+          </div>
+
+        </div>
+      </div>
+
+
+      {{ if .Params.market_value }}
+      <hr class="hr mt-5" />
+
+      <div class="rum-collection detail-margin" data-pagefind-ignore>
+        <a class="anchor" id="community-collection"></a>
+        <h2>What is the price trend for this rum?</h2>
+
+        {{ if .Params.market_value }}
+        <div class="row mb-4">
+          <div class="col-12 col-sm-4">
+            <div class="card p-3">
+              <div>
+                <span class="overall-rating-text h2">{{ replace .Params.market_value " EUR" "" }} €</span>
+              </div>
+              <b class="h4 text-muted mt-1 mb-0">Ø Market value</b>
+            </div>
+          </div>
+        </div>
+        {{ end }}
+        {{ if gt $all_bottles 0 }}
+        <h3>Community purchase statistics</h3>
+        <p class="text-block">The RumX community has already added <b>{{ lang.FormatNumberCustom 0 $all_bottles }} bottles</b> to
+          their collections:</p>
+
+        <div class="row">
+          <div class="col">
+            <p class="h3 overall-rating-text-big text-muted mb-0">{{ lang.FormatNumberCustom 0 .Params.stats.closedBottles }}</p>
+            <p>closed</p>
+          </div>
+          <div class="col">
+            <p class="h3 overall-rating-text-big text-muted mb-0">{{ lang.FormatNumberCustom 0 .Params.stats.openedBottles }}</p>
+            <p>opened</p>
+          </div>
+          <div class="col">
+            <p class="h3 overall-rating-text-big text-muted mb-0">{{ lang.FormatNumberCustom 0 .Params.stats.emptyBottles }}</p>
+            <p>emptied</p>
+          </div>
+        </div>
+        {{ end }}
+
+        {{ $openedBottles := .Params.stats.openedBottles | default 0 }}
+        {{ $emptyBottles := .Params.stats.emptyBottles | default 0 }}
+        {{ $open_empty_bottles := add $openedBottles $emptyBottles }}
+        {{ if eq $open_empty_bottles 0 }}
+          {{ $open_empty_bottles = 1 }}
+        {{ end }}
+        {{ if eq $all_bottles 0 }}
+          {{ $all_bottles = 1 }}
+        {{ end }}
+        {{ $open_rate := mul (div (mul $open_empty_bottles 1.0) $all_bottles) 100 }}
+        {{ if gt $open_empty_bottles 0 }}
+        <div>
+          <p class="h3 overall-rating-text-big text-muted mb-0">{{ math.Round $open_rate }}%</p>
+          <p>Open rate</p>
+        </div>
+        {{ end }}
+
+        <p class="text-block text-muted mb-2">Get the free RumX app now and <b>digitize your rum collection</b>. You'll
+          gain exciting insights into the <b>market value of your collection</b> and how individual bottles are
+          developing (updated weekly). The RumX app is an essential tool for all rum collectors and connoisseurs.</p>
+
+        <a class="btn btn-primary" href="/app/#collection">Create your virtual rum cabinet</a>
+      </div>
+      {{ end }}
+
+      {{ if gt (len .Params.charts) 0 }}
+      <hr class="hr mt-5" />
+
+      <div class="detail-margin" data-pagefind-ignore>
+        <a class="anchor" id="charts"></a>
+        <h2>Where has this rum been mentioned?</h2>
+        <p class="text-block">This rum is ranked in the following charts:</p>
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <ul class="list-group list-unstyled">
+              {{ range $chart := .Params.charts }}
+              <li>
+                <a class="card p-2 mb-2" href="{{ $chart.link }}">
+                  <div class="row align-items-center">
+                    <div class="col-11">
+                      <span class="pricing">{{ $chart.title }}</span><br>
+                      <span class="text-muted small">{{ $chart.chart }}</span>
+                    </div>
+                    <div class="col-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                        <path
+                          d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z" />
+                      </svg>
+                    </div>
+                  </div>
+                </a>
+              </li>
+              {{ end }}
+            </ul>
+          </div>
+        </div>
+      </div>
+      {{ end }}
+
+      {{ if gt (len $similar_rums) 0 }}
+      <hr class="hr mt-5" />
+
+      <div class="rum-recommendations detail-margin" data-pagefind-ignore>
+        <a class="anchor" id="similar-rums"></a>
+        <h2>What rums have a similar taste profile?</h2>
+        <p class="text-block text-muted">We have compiled a list of the best alternatives to this rum for you. The
+          identification of similar rums is based on the community's tasting notes and the key data of the rum.</p>
+        <div class="row">
+
+          {{ range $similar_rum_index, $similar_rum := $similar_rums }}
+              {{ range $rums_with_db_id }}
+
+                {{ if eq .rxid $similar_rum.rxid }}
+                  {{partialCached "rum_item_from_dict.html" (dict "rum" . ) .rxid "without_top_comment" }}   
+                {{ end }}
+
+              {{ end }}
+          {{ end }}
+
+          {{ partialCached "download.html" . }}
+        </div>
+      </div>
+      {{ end }}
+
+      {{ partialCached "rumx_downloads.html" . }}
+    </div>
+  </div>
+
+</article>
+{{ $t.Stop }}
+{{ end }}

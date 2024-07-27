@@ -1,0 +1,28 @@
+{{ $bottlers_with_db_id := dict }}
+
+{{ range $index, $bottlerFile := readDir "content/bottlers" }}
+    {{ with $bottlerFile }}
+        {{ $bottlerFileName := .Name}}
+        {{ $bottler_file_type_arr := split $bottlerFileName "." }}
+        {{ $bottler_file_name := index $bottler_file_type_arr 0}}
+        {{ $bottler_file_ext := index $bottler_file_type_arr 1 }}
+
+        {{ if and (eq $bottler_file_ext "md") (ne $bottler_file_name "_index") }}
+            {{ $rumPage := $.GetPage (printf "/bottlers/%s" $bottlerFileName) }}
+            {{ with $rumPage }}
+                {{ $singleRum := dict "bottler" .Params.bottler 
+                                    "title" .Title 
+                                    "ratingsCount" .Params.ratings.ratingsCount 
+                                    "ratingsMedian" .Params.ratings.ratingsMedian 
+                                    "rum_count" .Params.rum_count 
+
+                                    "url" .Permalink
+                }}
+                {{ $bottlers_with_db_id = merge $bottlers_with_db_id (dict (string (len $bottlers_with_db_id)) $singleRum) }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
+{{ end }}
+
+{{ $bottlers_with_db_id  = sort $bottlers_with_db_id "ratingsMedian" "desc" }}
+{{ return $bottlers_with_db_id }}

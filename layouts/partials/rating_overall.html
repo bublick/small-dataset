@@ -1,0 +1,13 @@
+{{ $t := debug.Timer "Rating Overall Partial" }}
+{{ if .includeRatingItemprops }}
+<div itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+{{ end }}
+    <div class="mb-0">
+        <span{{ if .includeRatingItemprops }} itemprop="ratingValue"{{ end }} class="overall-rating-text h2" data-pagefind-meta="overall_rating">{{ printf "%.1f" (math.Div (float .ctx.ratings.ratingsMedian) 10) }}</span><span class="overall-rating-max">/</span><span {{ if .includeRatingItemprops }} itemprop="bestRating"{{ end }} class="overall-rating-max">10</span><span class="{{ if .showAsLink }}main-link{{ end }} overall-rating-max ms-3"><span {{ if .includeRatingItemprops }} itemprop="reviewCount"{{ end }} data-pagefind-meta="review_count">{{ .ctx.ratings.ratingsCount }}</span> ratings</span>
+        <br>
+    </div>
+    <b class="h4 text-muted mt-1 mb-0">Community rating</b>
+{{ if .includeRatingItemprops }}
+</div>
+{{ end }}
+{{ $t.Stop }}

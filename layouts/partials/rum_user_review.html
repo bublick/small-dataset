@@ -1,0 +1,68 @@
+{{ $rating := math.Div (float .review.rating) 10.0 }}
+
+<div class="card comment user-review-toggle mt-2 mb-3" itemprop="review" itemtype="https://schema.org/Review" itemscope {{ if .hide }}style="display:none;"{{ end }}>
+  <meta itemprop="dateCreated" content="{{ .review.date }}">
+
+  <div class="card-body">
+    <div class="comment-header-container">
+      <img class="comment-container-profile-image rounded-circle" src='{{ if ne .review.profileImageURL ""}}{{ .review.profileImageURL }}{{else}}/assets/images/unknown_user.webp{{ end }}'
+                  alt="Profile picture of user" width="50" height="50" loading="lazy">
+      <div class="comment-header" itemprop="author" itemtype="https://schema.org/Person" itemscope>
+        <meta itemprop="name" content="{{ .review.username }}">
+        <h3 class="h4 mb-1">{{ .review.username }}</h3>
+        <p class="text-muted small">{{ time.Format "2006-01-02" .review.date}}</p>
+      </div>
+        
+      <div class="comment-rating" itemprop="reviewRating" itemscope itemtype="https://schema.org/Rating">
+        <span class="overall-rating-text h2" itemprop="ratingValue">{{ printf "%.1f" $rating }}</span><span class="overall-rating-max">/</span><span class="overall-rating-max"
+                  itemprop="bestRating">10</span>
+      </div>
+    </div>
+
+    <hr class="hr" />
+
+    <div class="row no-gutters">
+      {{ if .review.imagePreview }}<div class="col-md-10">{{ else }}<div class="col-md-12">{{ end }}
+        <p class="text-block comment-text" itemprop="reviewBody">“{{ .review.comment }}”</p>
+        {{ if or (gt (len .review.nosing_tags) 0) (gt (len .review.taste_tags) 0) }}
+          {{ if gt (len .review.nosing_tags) 0 }}
+          <div class="row">
+            <div class="col-3 col-md-2 col-xl-1 align-self-center"><p class="h4 ps-1">Aroma</p></div>
+            <div class="col-9 col-md-10 col-xl-11 tags-grid">
+              {{ range $tagIndex, $tag := .review.nosing_tags }}
+              {{ if lt $tagIndex 5 }}
+                <span class="taste-badge badge badge-pill" style="background-color:#FFFFFF; border-color:#{{ (index $tag 0).category.bgColor }}; color:#{{ (index $tag 0).category.bgColor }}">{{ (index $tag 0).en }}</span>
+              {{ end }}
+              {{ end }}
+            </div>
+          </div>
+          {{ end }}
+        {{ if gt (len .review.taste_tags) 0 }}
+        <div class="row">
+          <div class="col-3 col-md-2 col-xl-1 align-self-center"><p class="h4 ps-1">Taste</p></div>
+          <div class="col-9 col-md-10 col-xl-11 tags-grid">
+            {{ range $tagIndex, $tag := .review.taste_tags }}
+            {{ if lt $tagIndex 5 }}
+              <span class="taste-badge badge badge-pill" style="background-color:#FFFFFF; border-color:#{{ (index $tag 0).category.bgColor }}; color:#{{ (index $tag 0).category.bgColor }}">{{ (index $tag 0).en }}</span>
+            {{ end }}
+            {{ end }}
+          </div>
+        </div>
+        {{ end }}
+        {{ end }}
+      </div>
+
+      {{ if .review.imagePreview }}
+      <div class="col-md-2">
+        <a href="#{{ .review.userID }}">
+          <img itemprop="image" src="{{ .review.imagePreview }}" class="card-img" alt="Photo of the rum {{ .Params.basics_shortName }} taken from user {{ .review.username }}" loading="lazy">
+        </a>
+      </div>
+
+      <a href="#_" class="review-lightbox" id="{{ .review.userID }}">
+        <span style='background-image:url("{{ .review.image }}")'></span>
+      </a>
+      {{ end }}
+    </div>
+  </div>                
+</div>

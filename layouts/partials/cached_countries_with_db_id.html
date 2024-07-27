@@ -1,0 +1,31 @@
+{{ $countries_with_db_id := dict }}
+
+{{ range $index, $countryFile := readDir "content/countries" }}
+    {{ with $countryFile }}
+        {{ $countryFileName := .Name}}
+        {{ $country_file_type_arr := split $countryFileName "." }}
+        {{ $country_file_name := index $country_file_type_arr 0}}
+        {{ $country_file_ext := index $country_file_type_arr 1 }}
+
+        {{ if and (eq $country_file_ext "md") (ne $country_file_name "_index") }}
+            {{ $countryPage := $.GetPage (printf "/countries/%s" $countryFileName) }}
+            {{ with $countryPage }}
+                {{ $singleCountry := dict "title" .Title
+                                    "clean_name" .Params.clean_name
+                                    "countryFilename" $countryFileName 
+                                    "country_name" .Params.country_name
+                                    "code" .Params.code
+                                    "ratingsCount" .Params.ratings.ratingsCount 
+                                    "ratingsMedian" .Params.ratings.ratingsMedian 
+                                    "rum_count" .Params.rum_count 
+
+                                    "url" .Permalink 
+                }}
+                {{ $countries_with_db_id = merge $countries_with_db_id (dict (string (len $countries_with_db_id)) $singleCountry) }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
+{{ end }}
+
+{{ $countries_with_db_id  = sort $countries_with_db_id "ratingsMedian" "desc" }}
+{{ return $countries_with_db_id }}

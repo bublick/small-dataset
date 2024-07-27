@@ -1,0 +1,8 @@
+<div class="card m-2" style="width: 18rem;">
+    <img class="card-img-top p-2" src="/assets/images/shops/{{.shopLogo}}" alt="Logo of shop partner {{.shopName}}">
+    <div class="card-body p-2">
+        <h4 class="card-title mb-1">{{.shopName}}</h4>
+        <p class="card-text">{{ lang.FormatNumberCustom 0 .rumsAmount }} offers</p>
+    </div>
+    <a href="{{.shopUrl}}" class="stretched-link"></a>
+</div>

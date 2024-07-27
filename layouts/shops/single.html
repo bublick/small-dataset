@@ -1,0 +1,171 @@
+{{ define "main" }}
+
+{{$shopName := .Params.shop_name}}
+{{$shopRums := dict}}
+{{$unicRums := dict}}
+
+{{/* Get rums from .shop_name */}}
+{{ range where $.Site.Data.shop_items_by_rx "shop" "eq" $shopName }}
+    {{if eq (len .) 1}}
+        {{ $singleRum := dict "rx_by_ean" (index . 0).rx_by_ean}}
+        {{ $unicRums = merge $unicRums (dict (string (len $unicRums)) $singleRum) }}
+        {{ $shopRums = merge $shopRums (dict (string (len $shopRums)) $singleRum) }}
+    {{else}}
+        {{ range .}}
+            {{ if eq .shop $shopName }}
+                {{ $singleRum := dict "rx_by_ean" .rx_by_ean}}
+                {{ $shopRums = merge $shopRums (dict (string (len $shopRums)) $singleRum) }}
+                {{ break }}
+            {{ end }}
+        {{ end }}
+    {{end}}
+{{end}}
+{{$rumsAmount := len $shopRums}}
+
+{{ $all_rums := dict }}
+{{ $all_rums = partialCached "cached_rums_with_db_id.html" . }}
+
+{{ $all_shop_rums := dict }}
+{{ range $rumIndx, $rum := $all_rums }}
+    {{range $index, $shopRum := $shopRums}}
+        {{ if eq (int $rum.rxid_number) (int $shopRum.rx_by_ean) }}
+            {{ $singleRum := dict "rxid" $rum.rxid 
+                "rumFilename" $rum.rumFilename
+                "id_databaseRumID" $rum.id_databaseRumID
+                "refs_imageURLs" $rum.refs_imageURLs
+                "rxid_number" $rum.rxid_number 
+                "basics_shortName" $rum.basics_shortName
+                "basics_title" $rum.basics_title
+                "basics_description" $rum.basics_description
+                "title" $rum.title
+                "country_code" $rum.country_code 
+                "ratingsCount" $rum.ratingsCount
+                "ratingsMedian" $rum.ratingsMedian 
+                "rum_count" $rum.rum_count 
+                "review_short" $rum.review_short
+                "reviews_len" $rum.reviews_len
+                "top_review_comment" $rum.top_review_comment
+                "top_review_username" $rum.top_review_username
+
+                "url" $rum.url
+            }}
+            {{ $all_shop_rums = merge $all_shop_rums (dict (string (len $all_shop_rums)) $singleRum) }}
+        {{ end }}
+    {{ end }}
+{{ end }}
+
+{{ $unic_shop_rums := dict }}
+{{ range $rumIndx, $rum := $all_shop_rums }}
+    {{range $index, $unicRum := $unicRums}}
+        {{ if eq (int $rum.rxid_number) (int $unicRum.rx_by_ean) }}
+            {{ $singleRum := dict "rxid" $rum.rxid 
+                "rumFilename" $rum.rumFilename
+                "id_databaseRumID" $rum.id_databaseRumID
+                "refs_imageURLs" $rum.refs_imageURLs
+                "rxid_number" $rum.rxid_number 
+                "basics_shortName" $rum.basics_shortName
+                "basics_title" $rum.basics_title
+                "basics_description" $rum.basics_description
+                "title" $rum.title
+                "country_code" $rum.country_code 
+                "ratingsCount" $rum.ratingsCount
+                "ratingsMedian" $rum.ratingsMedian 
+                "rum_count" $rum.rum_count 
+                "review_short" $rum.review_short
+                "reviews_len" $rum.reviews_len
+                "top_review_comment" $rum.top_review_comment
+                "top_review_username" $rum.top_review_username
+
+                "url" $rum.url
+            }}
+            {{ $unic_shop_rums = merge $unic_shop_rums (dict (string (len $unic_shop_rums)) $singleRum) }}
+            {{ break }}
+        {{ end }}
+    {{ end }}
+{{ end }}
+{{/* End of calculation */}}
+
+<article>
+    <div class="container empty-page mt-3">
+        <nav class="breadcrumb">
+            <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a class="main-link" itemprop="item" href="/"><span itemprop="name">Home</span></a>
+                    <meta itemprop="position" content="1">
+                </li>
+                <li class="breadcrumb-arrow">›</li>
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    {{ $page := .Site.GetPage "/shops/" }}
+                    <a class="main-link" itemprop="item" href={{ $page.RelPermalink }}><span itemprop="name">Shops</span></a>
+                    <meta itemprop="position" content="2">
+                </li>
+                <li class="breadcrumb-arrow">›</li>
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <p class="text-block"><span itemprop="name">{{ .Params.shop_name }}</span></p>
+                    <meta itemprop="position" content="3">
+                </li>
+            </ol>
+        </nav>
+
+        <div class="row">
+            <div class="col-9">
+                <h1>{{ .Params.shop_name }} <span class="text-muted">on RumX</span></h1>
+            </div>
+            <div class="col-3 text-end">
+                <img src="/assets/images/shops/{{ .Params.shop_img }}" alt="Logo of the partner shop {{ .Params.shop_name }}" width="75" height="75">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <p class="h3 overall-rating-text-big text-muted mb-0">{{ len $shopRums}}</p>
+                <p>Total offers</p>
+            </div>
+            <div class="col">
+                <p class="h3 overall-rating-text-big text-muted mb-0">{{ .Params.partner_since }}</p>
+                <p>Shop partner since</p>
+            </div>
+        </div>
+
+        <p class="text-block">We have gathered the <b>most exciting offers on {{ .Title }}</b> for you. The selection is based on the <b>availability</b> of the rum and the <b>average rating</b> of the RumX community. We have also identified <b>rarities</b> that are only available on {{ .Title }}.</p>
+        
+        {{with .Params.homepage}}
+        <a class="btn btn-secondary mb-3" href="{{.| safeURL}}">Visit website</a>
+        {{end}}
+
+        <p class="text-block">Download the free RumX app for the best shopping experience.</p>
+
+        {{if gt (len $shopRums) 0}}
+        <h2>Top rated</h2>
+
+        <div class="detail-margin">
+            <div class="row" id="row-top-rums-all">
+                {{ $sorted_all_shop_rums := sort $all_shop_rums "ratingsMedian" "desc" }}
+                {{range $index, $single_sorted := $sorted_all_shop_rums}}
+                    {{ if lt $index $.Site.Params.rumx.offer_count }}
+                        {{partial "rum_item_from_dict.html" (dict "rum" $single_sorted "show_top_comment" true) $single_sorted.rxid "with_top_comment"}}
+                    {{end }}
+                {{end}}
+                {{ partialCached "download.html" . }}
+            </div>
+        </div>
+        {{end}}
+
+        {{if gt (len $unic_shop_rums) 0}}
+        <div class="detail-margin">
+            <h2>Uniquely available</h2>
+
+            <div class="row" id="row-top-rums-all">
+                {{ $sorted_unic_rums := sort $unic_shop_rums "ratingsMedian" "desc" }}
+                {{range $index, $unicRum := $sorted_unic_rums}}
+                    {{ if lt $index $.Site.Params.rumx.offer_count }}
+                        {{partial "rum_item_from_dict.html" (dict "rum" $unicRum "show_top_comment" true) $unicRum.rxid "with_top_comment" }}
+                    {{end}}
+                {{end}}
+                {{ partialCached "download.html" . }}
+            </div>
+        </div>
+        {{end}}
+    </div>
+</article>
+{{ end }}

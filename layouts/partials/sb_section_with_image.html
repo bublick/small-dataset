@@ -1,0 +1,18 @@
+{{ $rowClass := " " }}
+{{ if eq .component.image_position "right" }}
+    {{ $rowClass = " flex-row-reverse" }}
+{{ end }}
+
+{{ $imageColSize := math.Round (math.Mul (math.Div (add (cast.ToInt .component.image_width_percentage) 0) 100.0) 12) }}
+<div class="row mb-2 {{$rowClass}}">
+    <div class="col-lg-{{$imageColSize}}">
+        <img width="100%" src="{{ .component.image.filename }}" alt="{{ .component.image.alt }}">
+    </div>
+
+    <div class="col-lg-{{ math.Sub 12 $imageColSize }}">
+        {{ range .component.content }}
+            {{ $partial := printf `sb_%s.html` .component }}
+            {{ partial $partial (dict "component" . "blok" .text "highlight" .highlight) }}
+        {{ end }}
+    </div>
+</div>

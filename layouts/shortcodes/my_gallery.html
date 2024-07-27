@@ -1,0 +1,15 @@
+{{ $folder := .Get "folder"}}
+{{ $galleryDir := printf "/static/assets/posts/%s" $folder }}
+
+<div class="image-gallery">
+{{ range $index, $file := readDir $galleryDir }}
+    {{ $fileExt := index (split $file.Name ".") 1 }}
+    {{ if eq $fileExt "jpeg" }}
+        <div class="box">
+            <a href="{{ printf "/assets/posts/%s/%s" $folder $file.Name }}" title="{{ $file.Name }}">
+                <img src="{{ printf "/assets/posts/%s/%s" $folder $file.Name }}" alt="{{ $file.Name }}" class="img-gallery">
+            </a>
+        </div>
+    {{ end }}
+{{ end }}
+</div>

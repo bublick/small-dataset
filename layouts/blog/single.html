@@ -1,0 +1,69 @@
+{{ define "main" }}
+{{ if ne .Params.layout "old_blog_post" }}
+    <article>
+        <div class="container mb-5 mt-3">
+            <nav class="breadcrumb">
+                <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        <a class="main-link" itemprop="item" href="/"><span itemprop="name">Home</span></a>
+                        <meta itemprop="position" content="1">
+                    </li>
+                    <li class="breadcrumb-arrow">›</li>
+                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        <a class="main-link" itemprop="item" href="/blog/"><span itemprop="name">Blog</span></a>
+                        <meta itemprop="position" content="2">
+                    </li>
+                    <li class="breadcrumb-arrow">›</li>
+                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        <p class="text-block"><span itemprop="name">{{ .Params.content_title }}</span></p>
+                        <meta itemprop="position" content="3">
+                    </li>
+                </ol>
+            </nav>
+
+            
+
+            <div class="hero-image mb-3" style="background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url({{ .Params.content.hero_image.filename }})">
+                <div class="hero-text">
+                    <h1>{{ .Params.content_title }}</h1>
+                    <p class="h3">{{ .Params.content_subtitle }}</p>
+                </div>
+            </div>
+            
+            <p class="text-block">{{ .Params.content_description }}</p>
+            {{ $t := time.Now | time.Format "2 Jan 2006"}}
+            {{ if .Params.created_at }}
+                {{ $created_at := .Params.created_at }}
+                {{ $created_at = time.AsTime $created_at }}
+                {{ $t = $created_at.Format "2 Jan 2006" }}
+            {{ end }}
+
+            <p class="text-muted mb-2">{{ $t }}</p>
+            <hr class="hr mt-3 mb-5" />
+
+            {{ range .Params.sections }}
+            <!-- {% include sb_{ {blok.component} }.html blok=blok %} -->
+                {{ $partial := printf `sb_%s.html` .component }}
+                {{ partial $partial (dict "component" . "blok" .text "highlight" .highlight) }}
+            {{ end }}
+
+            <!-- ->{{ range $key, $val := .Params.content }}
+                <li>{{ $key }}{{$val}} <br/></li>
+            {{end}}
+            -->
+            
+            {{ $partial := `sb_discourse_comments.html` }}
+            
+            {{ if .Params.comments }}
+                {{ partial $partial (dict "component" . "blok" (first 1 .Params.comments) ) }}
+            {{ end }}
+
+        </div>
+    </article>
+{{ else if eq .Params.layout "old_blog_post" }}
+
+{{ .Content }}
+
+{{ end }}
+
+{{ end }}

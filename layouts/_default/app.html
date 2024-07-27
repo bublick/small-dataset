@@ -1,0 +1,205 @@
+{{/* <!-- {% assign tasting_notes_count = 0 %}
+{% for rum in site.rums %}
+{% assign tasting_notes_count = tasting_notes_count | plus: rum.ratings.ratingsCount %}
+{% endfor %} --> */}}
+
+{{ define "main" }}
+    {{ $rum_count := 1}}
+    <article>
+        <div class="container mt-3">
+            <nav class="breadcrumb">
+                <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        <a class="main-link" itemprop="item" href="/"><span itemprop="name">Home</span></a>
+                        <meta itemprop="position" content="1">
+                    </li>
+                    <li class="breadcrumb-arrow">›</li>
+                    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                        <p class="text-block"><span itemprop="name">Why you will love RumX</span></p>
+                        <meta itemprop="position" content="2">
+                    </li>
+                </ol>
+            </nav>
+
+            <h1 class="base-headline">Why you will love the RumX App</h1>
+            <!-- {% assign top_countries = site.countries | sort: 'ratings.ratingsCount' | reverse %} -->
+        </div>
+
+        <div class="container">
+            <p class="text-block">Ready to elevate your rum experience? The RumX app is far more than just a website; it's like having a seasoned rum connoisseur right in your pocket. With extensive reviews, quick search options, and a lively community, <b>the RumX app is your all-in-one destination for all things rum</b>. Don't settle for less—scroll down to explore our key features and unlock the full rum experience today!</p>
+
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="mx-auto double-device-wrapper pt-4">
+                        <img class="img-fluid double-iphone-device-screenshot" src="/assets/screenshots/app_review_portal.webp" alt="Screenshot of the search rum and review page in our iOS app">
+                    </div>
+                </div>
+
+                <!-- {% assign rum_count_rounded = site.rums | size | divided_by: 1000 | round | times: 1000 %} -->
+
+                <div class="col-lg-6 order-first order-md-last">
+                    <h2>Review platform for {{ $rum_count | int }}+ rums</h2>
+                    <p class="text-block">Unlock <b>the world’s richest rum database</b> with the RumX app. Currently featuring <b>{{ .Site.Params.rums | int }} distinct rums</b>, our extensive collection goes beyond just mainstream offerings to include exclusive single cask and small batch releases.</p>
+                    <p class="text-block">Wondering what sets a particular rum apart? Our vibrant, independent community has already contributed <b>over {{ .Site.Params.tasting_notes_count | int }} tasting notes</b> to help you grasp the essence of each bottle. Skip the endless Google searches, varied shop reviews, and blog hunts; find everything you need in one place. Make informed choices and avoid buyer's regret forever.</p>
+                    <p class="text-block">Plus, finding your next rum is a snap with our <b>built-in barcode scanner</b> — making your rum discovery journey as seamless as possible.</p>
+
+                    {{ $page := .Site.GetPage "/search" }}
+                    <a class="btn btn-primary mt-2 me-2" href={{ $page.RelPermalink }}>Search {{ .Site.Params.rums | int }} rums</a>
+                    {{ $page := .Site.GetPage "/top-rums-by-region/" }}
+                    <a class="btn btn-secondary mt-2" href={{ $page.RelPermalink }}>Top rated rums</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container my-5">
+            <a class="anchor" id="tasting-assistant"></a>
+            <div class="row align-items-center mb-5 gy-5">
+                <div class="col-lg-6">
+                    <h2>Your personal Tasting Assistant</h2>
+                    <p class="text-block">Unveil the full spectrum of flavors in every rum with our advanced tasting wizard. This feature-rich tool offers a <b>guided journey through each tasting stage</b> — from appearance and aroma to palate and finish. Get tailored advice or forge your own path, making every sip an educational experience.</p>
+                    
+                    <ul>
+                        <li><p class="text-block"><b>For beginners:</b> Receive real-time tips as you taste, informed by insights from other users. Learn to discern intricate flavors and qualities in a fun, interactive way.</p></li>
+                        <li><p class="text-block"><b>For Seasoned Connoisseurs:</b>Enjoy complete flexibility in logging your impressions. Use intuitive sliders and characteristic tags for quick input, and delve deeper with personalized comments.</p></li>
+                    </ul>
+                    
+                    <p class="text-block">No matter your level of expertise, our Tasting Assistant ensures you'll capture every nuance. Record your experiences in a <b>personal tasting diary</b> and share your impressions with the community, so you'll always remember which rums made you smile.</p>
+
+                    <a class="intro-button-download-app-store" href="{{ .Site.Params.rumx.app_store_url }}"><img class="dl-image" src="/assets/images/download-app-store.webp" alt="Download app on app store" loading="lazy"></a>
+                    <a class="intro-button-download-google-play" href="{{ .Site.Params.rumx.google_play_url }}"><img class="dl-image" src="/assets/images/download-google-play.webp" alt="Download app on google play" loading="lazy"></a>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="mx-auto double-device-wrapper pt-4">
+                        <img class="img-fluid double-iphone-device-screenshot" src="/assets/screenshots/app_tastings.webp" alt="Screenshot of the rum tasting page in our iOS app" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container my-5">
+            <a class="anchor" id="collection"></a>
+            <div class="row align-items-center mb-5 gy-5">
+                <div class="col-lg-6">
+                    <div class="mx-auto double-device-wrapper pt-4">
+                        <img class="img-fluid" src="/assets/screenshots/app_collection_management.webp" alt="Screenshot of the collection statistics screen in the iOS app" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="col-lg-6 order-first order-md-last">
+                    <h2>Your digital rum collection</h2>
+                    <p class="text-block">Tired of forgetting details about your rum bottles? With your digital rum cabinet, you'll easily remember <b>when</b>, <b>where</b>, and for <b>what price</b> you bought each bottle. Plus, you get useful stats about your collection.</p>
+                    <p class="text-block">The standout feature? You get <b>real-time price estimates</b> for your bottles, and these aren't just guesses. We use real sales data from trusted auction houses to give you accurate values.</p>
+                    <p class="text-block">Keep everything neat by listing both your full bottles and any samples you have. This helps you <b>see what you've got and what you might want to try next</b>.</p>
+
+                    <div class="mt-4">
+                        <h3>Community collection stats</h3>
+
+                        <div class="row">
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                <div class="text-start px-1">
+                                    <div class="card-body text-center">
+                                        <p class="h2 mb-1">{{ .Site.Params.data.community_stats.bottles | int }}</p>
+                                        <p class="h4 text-muted">tracked bottles</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                <div class="text-start px-1">
+                                    <div class="card-body text-center">
+                                        <p class="h2 mb-1">{{ .Site.Params.data.community_stats.bottlesValues | int }}</p>
+                                        <p class="h4 text-muted">market value (€)</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-sm-12 col-md-4 col-lg-4">
+                                <div class="text-start px-1">
+                                    <div class="card-body text-center">
+                                        <p class="h2 mb-1">{{ .Site.Params.data.community_stats.samples | int }}</p>
+                                        <p class="h4 text-muted">tracked samples</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>        
+                </div>
+            </div>
+        </div>
+
+        <div class="container my-5">
+            <a class="anchor" id="community"></a>
+            <div class="row align-items-center mb-5 gy-5">
+                <div class="col-lg-6">
+                    <h2>Active rum community</h2>
+
+                    <p class="text-block">Stay in the loop with real-time updates from the RumX community. From trending rums to recent tastings, our feed keeps you updated on what’s capturing everyone’s attention. <a class="main-link" href="https://www.rum-x.com/blog/follow-your-friends/">Follow friends</a> to keep tabs on their latest sips and top picks.</p>
+                    
+                    <p class="text-block">For a deeper experience, dive into our community forum. Here, members organize exciting <a class="main-link" href="https://www.rum-x.com/blog/whats-a-bottle-split/">bottle splits</a> daily at cost price, allowing you to sample a variety of rums without committing to a full bottle. Swap tasting notes, <b>get insider buying tips</b>, and be the first to know when a sought-after rarity hits the shelves. It's not just a community; it's a rum-lover's paradise.</p>
+
+                    <a class="btn btn-primary my-2" href="https://community.rum-x.com">Visit forum</a>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="mx-auto double-device-wrapper pt-4">
+                        <img class="img-fluid double-iphone-device-screenshot" src="/assets/screenshots/app_community.webp" alt="Screenshot of the community feed with the latest tastings in our iOS app" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container my-5">
+            <a class="anchor" id="marketplace"></a>
+            <div class="row align-items-center mb-5 gy-5">
+                <div class="col-lg-6">
+                    <div class="mx-auto double-device-wrapper pt-4">
+                        <img class="img-fluid" src="/assets/screenshots/app_marketplace.webp" alt="Screenshot of the integrated rum marketplace with thousands of rum offers" loading="lazy">
+                    </div>
+                </div>
+
+                <div class="col-lg-6 order-first order-md-last">
+                    <h2>In-App Marketplace</h2>
+                    <p class="text-block">Step into a bustling marketplace with <b>over {{ len .Site.Data.shop_items_by_rx }} rum offers</b> from {{ .Site.Params.shops }} specialized partner shops. Our <b>Buyer's Guide</b> streamlines your search — easily filter selections by country, price, and community ratings to find your next favorite bottle.</p>
+                    <p class="text-block">Spotted a rum you can't resist? Take advantage of our seamless, <b>integrated checkout</b> to make your purchase instantly within the app. Plus, your RumX account is all you need—you can buy from any of our partner stores without the hassle of creating multiple accounts.</p>
+                    <p class="text-block">If you're seeking inspiration, our curated <b>editorial lists</b> and <b>personalized recommendations</b> will guide you toward your next favorite rum.</p>
+
+                    {{ $page := .Site.GetPage "/shops/" }}
+                    <a class="btn btn-primary mt-2 me-2" href={{ $page.RelPermalink }}>Our shop partners</a>
+                    {{ $page := .Site.GetPage "/recommendations" }}
+                    <a class="btn btn-secondary mt-2" href={{ $page.RelPermalink }}>Recommendations</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container my-5">
+            <a class="anchor" id="all-in-one"></a>
+            <div class="row align-items-center mb-5 gy-5">
+                <div class="col-lg-6">
+                    <h2>All in one platform</h2>
+                    <p class="text-block">Why juggle multiple apps when you can have it all in one place? The RumX app streamlines your rum journey by integrating <b>collection management</b>, <b>tasting notes</b>, and <b>shopping guidance</b>. Find a rum you love? Add it to your wishlist and receive alerts when it's available at a great price in one of our partner stores.</p>
+                    <p class="text-block">Plus, our app is <b>fully offline-enabled</b> for both iOS and Android. That means you can log your tasting experiences even from the depths of a bar cellar—ensuring you never miss a note.</p>
+                    
+                    <a class="intro-button-download-app-store" href="{{ .Site.Params.rumx.app_store_url }}"><img class="dl-image" src="/assets/images/download-app-store.webp" alt="Download app on app store" loading="lazy"></a>
+                    <a class="intro-button-download-google-play" href="{{ .Site.Params.rumx.google_play_url }}"><img class="dl-image" src="/assets/images/download-google-play.webp" alt="Download app on google play" loading="lazy"></a>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="mx-auto double-device-wrapper pt-4">
+                        <img class="img-fluid double-iphone-device-screenshot" src="/assets/screenshots/app_all_in_one.webp" alt="Screenshot of the explore area in the iOS app" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section container text-center mt-10">
+            <p class="h4 text-uppercase text-color-secondary">Ready to start?</p>
+
+            <p class="text-block">You've seen what the <b>free RumX app</b> has to offer - now it's time to dive in. Elevate your rum journey with our all-in-one platform, designed for both casual fans and aficionados alike. From a robust review system to an active community and convenient marketplace, we've got everything you need to become a rum expert.</p>
+            
+            <a class="intro-button-download-app-store" href="{{ .Site.Params.rumx.app_store_url }}"><img class="dl-image" src="/assets/images/download-app-store.webp" alt="Download app on app store" loading="lazy"></a>
+            <a class="intro-button-download-google-play" href="{{ .Site.Params.rumx.google_play_url }}"><img class="dl-image" src="/assets/images/download-google-play.webp" alt="Download app on google play" loading="lazy"></a>
+        </div>
+
+    </article>
+{{ end }}

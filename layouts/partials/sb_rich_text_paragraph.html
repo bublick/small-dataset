@@ -1,0 +1,15 @@
+{{ if eq .ignoreP "false" }}<p class="text-block">{{ end }}
+    {{ range .blok }}
+        {{ if eq (index .marks 0).type "bold" }}
+            <b>{{ .text }}</b>
+        {{ else if eq (index .marks 0).type "italic" }}
+            <i class="text-muted">{{ .text }}</i>
+        {{ else if eq (index .marks 0).type "link" }}
+            <a class="main-link" href="{{ (index .marks 0).attrs.href }}">{{ .text }}</a>
+        {{ else if eq .type "image" }}
+            <img class="storyblok-image mx-auto d-block mb-2" width="100%" src="{{ .attrs.src }}" alt="{{ .attrs.alt }}" title="{{ .attrs.title }}">
+        {{ else }}
+            {{ .text }}
+        {{ end }}
+    {{ end }}
+{{ if eq .ignoreP "false" }}</p>{{ end }}

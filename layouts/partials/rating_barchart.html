@@ -1,0 +1,104 @@
+{{ $t := debug.Timer "Rating Barchart Partials" }}
+<!-- <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+<div id="chart-wrapper" class="mt-2" style="position:relative; height:250px; width:350px">
+  <canvas id="ratingChart"></canvas>
+</div>
+
+<script>
+  var chartData = {{ .Params.ratings.chartData }};
+  console.log(chartData);
+  var cleanData = [];
+
+  chartData.forEach(function (item) {
+    var items = Object.keys(item);
+    items.forEach(function (key) {
+      if (key === '1') {
+        cleanData.push(item[key])
+      }
+    });
+  });
+
+  Chart.defaults.font.family = 'Figtree'
+  var ctx = document.getElementById('ratingChart');
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+      datasets: [{
+        label: 'Votes',
+        borderRadius: 5,
+        data: cleanData,
+        backgroundColor: [
+          'rgba(224, 62, 44, 0.7)',
+          'rgba(224, 62, 44, 0.7)',
+          'rgba(224, 62, 44, 0.7)',
+          'rgba(224, 62, 44, 0.7)',
+          'rgba(239, 181, 0, 0.7)',
+          'rgba(239, 181, 0, 0.7)',
+          'rgba(239, 181, 0, 0.7)',
+          'rgba(239, 181, 0, 0.7)',
+          'rgba(42, 161, 76, 0.7)',
+          'rgba(42, 161, 76, 0.7)',
+          'rgba(42, 161, 76, 0.7)',
+          'rgba(42, 161, 76, 0.7)'
+        ],
+        borderColor: [
+          '#rgba(224, 62, 44, 1)',
+          'rgba(224, 62, 44, 1)',
+          'rgba(224, 62, 44, 1)',
+          'rgba(224, 62, 44, 1)',
+          'rgba(239, 181, 0, 1)',
+          'rgba(239, 181, 0, 1)',
+          'rgba(239, 181, 0, 1)',
+          'rgba(239, 181, 0, 1)',
+          'rgba(42, 161, 76, 1)',
+          'rgba(42, 161, 76, 1)',
+          'rgba(42, 161, 76, 1)',
+          'rgba(42, 161, 76, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false
+        },
+        title: {
+          display: false,
+        }
+      },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: 'Rating (0-10)'
+          },
+          ticks: {
+            font: { 
+              weight: 'bold',
+              family: 'Figtree'
+            }
+          }
+        },
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Number of reviews'
+          },
+          ticks: {
+            maxTicksLimit: 5
+          },
+        }
+      }
+    }
+  });
+</script>
+{{ $t.Stop }}

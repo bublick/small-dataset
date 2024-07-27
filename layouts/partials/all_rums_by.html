@@ -1,0 +1,44 @@
+{{ $t := debug.Timer "AllRumsBy Partial" }}
+{{ if len .all_rums }}
+    <hr class="hr mt-5" />
+
+    <div class="detail-margin distillery-country-list">
+        <h2>{{ .heading }}</h2>
+        <ul class="mb-0">
+            {{ range $index, $rum := .all_rums }}
+                {{ if lt $index site.Params.rumx.show_all_rums_preview_count }}
+                <li class="arrow-li">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+                    </svg>
+                    <a href={{ $rum.url }}>{{ $rum.basics_fullName}}</a> <span class="count-badge badge badge-pill">{{ $rum.rxid }}</span>
+                </li>
+                {{ end }}
+            {{ end }}
+
+            {{ range $index, $rum := .all_rums }}
+                {{ if gt $index site.Params.rumx.show_all_rums_preview_count }}
+                <li class="all-rums-further-link-li arrow-li" style="display:none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8" />
+                    </svg>
+                    <a href={{ $rum.url }}>{{ $rum.basics_fullName }}</a> <span class="count-badge badge badge-pill">{{ $rum.rxid }}</span>
+                </li>
+                {{ end }}
+            {{ end }}
+        </ul>
+
+        {{ if gt (len .all_rums) site.Params.rumx.show_all_rums_preview_count }}
+        <button id="all-rums-further-link-show-more-button" type="button" class="btn btn-link">Show all</button>
+        {{ end }}
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+            $('#all-rums-further-link-show-more-button').click(function () {
+                $(".user-review-card").css("display", "block");;
+                $("#all-rums-further-link-show-more-button").css("display", "none");
+            });
+        </script>
+    </div>
+{{ end }}
+{{ $t.Stop }}

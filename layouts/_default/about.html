@@ -1,0 +1,72 @@
+{{ define "main" }}
+<article>
+    <div class="container mt-3">
+        <nav class="breadcrumb">
+            <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a class="main-link" itemprop="item" href="/"><span itemprop="name">Home</span></a>
+                    <meta itemprop="position" content="1">
+                </li>
+                <li class="breadcrumb-arrow">›</li>
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <p class="text-block"><span itemprop="name">{{ .Title }}</span></p>
+                    <meta itemprop="position" content="2">
+                </li>
+            </ol>
+        </nav>
+
+        <div>
+            <h1>Our Vision</h1>
+
+            <p class="text-block">At RumX, we're not just about rum; we're about creating a worldwide community that elevates the rum experience for everyone involved. We strive to be the go-to home for global rum enthusiasts, a place where you can taste, talk, and treasure this incredible spirit.
+            </p>
+
+            <ol>
+                <li><b>Home of the Global Rum Community:</b> We're building an interactive space where users can taste new rums and connect with other rum aficionados. It's not just an app; it's a community.</li>
+                <li><b>Unmatched Knowledge Platform:</b> We take pride in having the largest rum database in the world, offering invaluable resources to both novice tasters and seasoned connoisseurs. With us, you're always in the know.</li>
+                <li><b>Guiding Your Rum Journey:</b> Exploring the world of rum can be overwhelming. That's why we offer guided experiences to help you discover the spirit's astounding diversity. Think of us as your personalized rum tour guide.</li>
+                <li><b>Revolutionizing Online Shopping:</b> What sets RumX apart is our innovative marketplace, which seamlessly integrates user reviews, personalized recommendations, and a robust online store. It's not just shopping; it's an experience tailored to your taste.</li>
+            </ol>
+
+            <p class="text-block">Ready to be a part of our vision and redefine how you enjoy rum? Download the RumX app now to dive into the full experience.</p>            
+        </div>
+
+        <div class="row mt-5">
+            <h2>Meet the Team Behind RumX</h2>
+
+            <div class="col-sm">
+                <p class="text-block">RumX didn't just happen overnight; it's the result of years of dedication and a genuine passion for rum. Originating in Germany's bustling rum scene in 2018 as <b>Rum Tasting Notes</b>, the platform took a new identity as <b>RumX</b> in 2021 to better reflect its expanded capabilities. Here's a little about the core team that makes it all possible:</p>
+
+                <p class="text-block"><b>Oliver Gerhardt</b> laid the groundwork for RumX back in 2018 when it was just a side project known as Rum Tasting Notes. Today, he's our full-time tech wizard, responsible for both iOS and Android app development, as well as keeping the RumX website up to par.</p>
+            
+                <p class="text-block"><b>Jakob Schellhorn</b> joined the inner circle in early 2021, overseeing product management and marketing. Although a part-time contributor, Jakob injects vital expertise in Customer Experience and Growth, helping to steer the RumX ship.</p>
+            </div>
+            <div class="col-sm">
+                <img class="about-us-img m-3 center" src="/assets/img/team.webp" alt="Picture of the co-founders Oliver and Jakob">
+            </div>
+        </div>
+
+        <div class="pt-5">                
+            <p class="text-block">In addition to this core team, we receive exceptional support from various freelancers who help us make RumX what it is today. Special mention goes to <b>Marcus Rottschäfer</b>, who develops the recommendation algorithms through his excellent machine learning skills, which are used for instance to determine personalized recommendations or rums that taste similar.</p>
+            <p class="text-block">Furthermore, we would like to thank <a class="main-link" href="https://www.theresaplos.com">Theresa Plos</a> for the major redesign. She revamped the look of the app, the website and the logo in Summer 2022 and gave RumX a new face.</p>
+            <p class="text-block">Special thanks also go to <b>Benoit Bail-Danel</b>, who accompanied <i>Rum Tasting Notes</i> from October 2019 to January 2021. Together with Oliver, he took part in the <a class="main-link" href="https://sandbox-stuttgart.de">start-up accelerator programme Sandbox</a> at the Stuttgart Media University and has helped to significantly expand the partner ecosystem and user base through his valuable network.</p>
+            <p class="text-block">A special thanks also goes to <b>Vincent Kesel</b>, who has played a major role in the development of the long-awaited Android version of <i>Rum Tasting Notes</i> in the summer of 2020.</p>
+
+            <p class="text-block">Whether full-time, part-time, or freelance, every team member contributes uniquely to making RumX the ultimate platform for rum enthusiasts. We invite you to become part of our community and experience RumX for yourself.</p>
+        </div>
+
+        <div class="row pt-5">
+            <div class="col-12 col-sm-6">
+                <h3 class="mt-3">Presentation of the app features</h3>
+                <iframe title="YouTube clip of the core features" class="youtube-iframe" src="https://www.youtube-nocookie.com/embed/dMvDiMkG0pc">
+                </iframe>
+            </div>
+            <div class="col-12 col-sm-6">
+                <h3 class="mt-3">Sandbox Startup Accelerator Pitch</h3>
+                <iframe title="YouTube clip of the Sandbox Startup Accelerator Pitch" class="youtube-iframe" src="https://www.youtube-nocookie.com/embed/ceij3auBcss">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</article>
+{{ end }}

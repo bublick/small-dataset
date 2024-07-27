@@ -1,0 +1,68 @@
+<!-- Technical debt: Redundancy to the template of search.html
+Todo: Resolve redundancy and reuse template here in search if possible with JekyllSimpleSearch? -->
+{{ $img_path := "" }}
+{{ if and .rum.refs_imageURLs (gt (len .rum.refs_imageURLs) 0) }}
+  {{ $img_path = index .rum.refs_imageURLs 0 }}
+{{ else }}
+  {{ $img_path = "/assets/images/bottle_bg.webp" }}
+{{ end}}
+
+{{ $rating_median := math.Div (float .rum.ratingsMedian) 10.0 }}
+{{ $rating_count := .rum.ratingsCount }}
+
+{{ if .el_median_rating }}
+  {{ $rating_median = cast.ToFloat .el_median_rating }}
+{{ end }}
+
+{{ if .el_rating_count }}
+  {{ $rating_count = cast.ToFloat .el_rating_count }}
+{{ end }}
+
+{{ if eq $rating_median 0 }}
+  {{ $rating_median = "-" }}
+{{ end }}
+{{ $show_top_comment := .show_top_comment }}
+
+<div class="col-12 col-sm-6 col-md-6 col-lg-4 d-flex">
+  <div class="card position-relative mb-3 flex-fill">
+    <div class="text-end position-absolute top-0 end-0 text-muted">
+      <p class="h5 m-2 text-color-primary"><img style="padding-bottom: 2px;" src="/assets/images/rx_prefix.webp" alt="Short RumX logo" height="12">{{ .rum.rxid_number }}</p>
+    </div>
+    {{ $chart_position := .chart_position }}
+    {{ if $chart_position }}<div class="chart-position-circle m-2">{{ $chart_position }}</div>{{ end }}
+    <div class="card-body">
+      <div class="row g-0">
+        <div class="col-8">
+          <img class="card-img-rum rounded" src="{{ $img_path }}" alt="Image of the front of the bottle of the rum {{ .rum.basics_shortName }}" loading="lazy">
+        </div>
+        <div class="col-4 align-self-center text-center">
+          <p class="mb-0 card-rating">
+            <b><span class="overall-rating-text">{{ printf "%.1f" $rating_median }}</span></b><span class="overall-rating-max">/</span><span class="overall-rating-max">10</span>
+          </p>
+          <span class="overall-rating-max"><span>{{ $rating_count }}</span> ratings</span>
+        </div>
+      </div>
+
+      <h3 class="h4 card-title mt-3 mb-1">{{ .rum.basics_shortName }}</h3>
+      <!-- | strip_html | truncatewords: 8 -->
+      <div class="card-text text-truncate mb-1">{{ .rum.basics_title }}</div>
+      <div class="card-text text-truncate text-muted">{{ if .rum.basics_description }}{{ .rum.basics_description | safeHTML }}{{ end }}</div>
+      <a href={{ .rum.url }} class="stretched-link" aria-label="Learn more about the rum with the id RX{{ .rum.rxid_number }}"></a>
+    </div>
+
+    {{ if and (eq $show_top_comment true) .rum.review_short }}
+    <div class="mx-3">
+      <hr class="hr mt-0" />
+      <h4 class="h5 mb-0">Community opinion:</h4>
+      <p class="top-comment-short text-muted"><i>“{{ .rum.review_short }}”</i></p>
+    </div>
+    {{ else if and $show_top_comment (gt .rum.reviews_len  0) }}
+    <div class="mx-3">
+      <hr class="hr mt-0" />
+      <h4 class="h5 mb-0">Top review from <span class="text-muted">{{ .rum.top_review_username }}</span>:</h4>
+
+      <p class="top-comment-short text-muted"><i>"{{ .rum.top_review_comment }}"</i></p>
+    </div>
+    {{ end }}
+  </div>
+</div>

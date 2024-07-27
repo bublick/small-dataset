@@ -1,0 +1,79 @@
+
+{{$top_rated_rums := sort .rums "ratingsMedian" "desc" }}
+{{$available_rums := dict }}
+
+{{ range $rumIndex, $rum := $top_rated_rums }}
+    {{$rxid := string $rum.rxid}}
+    {{ with $map := index site.Data.shop_items_by_rx $rxid }}
+    {{ $singleRum := dict "rxid" $rum.rxid 
+                        "rumFilename" $rum.rumFilename
+                        "id_databaseRumID" $rum.id_databaseRumID
+                        "refs_imageURLs" $rum.refs_imageURLs
+                        "rxid_number" $rum.rxid_number 
+                        "basics_shortName" $rum.basics_shortName
+                        "basics_title" $rum.basics_title
+                        "basics_description" $rum.basics_description
+                        "title" $rum.title
+                        "country_code" $rum.country_code 
+                        "ratingsCount" $rum.ratingsCount
+                        "ratingsMedian" $rum.ratingsMedian 
+                        "rum_count" $rum.rum_count 
+                        "review_short" $rum.review_short
+                        "reviews_len" $rum.reviews_len
+                        "top_review_comment" $rum.top_review_comment
+                        "top_review_username" $rum.top_review_username
+
+                        "url" $rum.url
+        }}
+        {{$available_rums = merge $available_rums (dict (string (len $available_rums)) $singleRum)}}
+    {{end}}
+{{ end }}
+
+{{ if gt (len $top_rated_rums) 0 }}
+<hr class="hr mt-5" />
+<div class="detail-margin">
+    <h2>{{ .heading }}</h2>
+
+    {{ if gt (len $available_rums) 0 }}
+    <div class="form-check form-switch mb-2">
+        <input class="form-check-input" type="checkbox" role="switch" id="top-rums-switch">
+        <label class="form-check-label" for="top-rums-switch">Only available rums</label>
+    </div>
+    {{ end }}
+
+    <div class="row" id="row-top-rums-all">
+        {{ range $index, $rum := $top_rated_rums }}
+            {{ if lt $index site.Params.rumx.top_rums_count }}
+                {{ partial "rum_item_from_dict.html" (dict "rum" . "show_top_comment" true) .rxid "with_top_comment" }}
+            {{ end }}
+        {{end}}
+        {{ partialCached "download.html" . }}
+    </div>
+
+    <div class="row" id="row-top-rums-available">
+        {{ range $index, $rum := $available_rums }}
+            {{ if lt $index site.Params.rumx.top_rums_count }}
+                {{ partial "rum_item_from_dict.html" (dict "rum" . "show_top_comment" true) .rxid "with_top_comment" }}
+            {{ end }}
+        {{end}}
+        {{ partialCached "download.html" . }}
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $("#top-rums-switch").on('change', function () {
+        if ($(this).is(':checked')) {
+            $("#row-top-rums-all").hide();
+            $("#row-top-rums-available").show();
+        }
+        else {
+            $("#row-top-rums-all").show();
+            $("#row-top-rums-available").hide();
+        }
+    });
+
+    $("#row-top-rums-available").hide();
+</script>
+
+{{ end }}

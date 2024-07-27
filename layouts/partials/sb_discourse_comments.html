@@ -1,0 +1,60 @@
+{{ $topic_id := 0}}
+{{ with .blok}}
+    {{range $key, $val := (index . 0)}}
+
+        {{ if eq $key "content" }}
+            {{ with $val }}
+                {{range $key, $val := (index . 0)}}
+                    {{ if eq $key "text" }}
+                        {{ range $key, $val := .content }}
+                        
+                            {{if eq .type "heading"}}
+                                {{ $headingSize := .attrs.level}}
+                                {{ with .content }}
+                                    {{ with $val.content }}
+                                        {{ range $key, $val := . }}
+                                        <div>
+                                            {{ if $val.text }}
+                                            <h{{$headingSize}} class="mt-5">
+                                                {{ $val.text }}
+                                            </h{{$headingSize}}>
+                                            {{ end }}
+                                        {{ end }}
+                                        </div>
+                                    {{end}}
+                                {{ end }}
+                            {{ else if eq .type "paragraph" }}
+                            <div>
+                                <p class="text-block">
+                                {{ with .content }}
+                                    {{ with $val.content }}
+                                        {{ range $key, $val := . }}
+                                            {{ if eq (index .marks 0).type "bold" }}
+                                                <b>{{ $val.text }}</b>
+                                            {{ else if eq (index .marks 0).type "italic" }}
+                                                <i class="text-muted">{{ $val.text }}</i>
+                                            {{ else if eq (index .marks 0).type "link" }}
+                                                <a class="main-link" href="{{ (index .marks 0).attrs.href }}">{{ $val.text }}</a>
+                                            {{ else if eq .type "image" }}
+                                                <img class="storyblok-image mx-auto d-block mb-2" width="100%" src="{{ .attrs.src }}" alt="{{ .attrs.alt }}" title="{{ .attrs.title }}">
+                                            {{ else }}
+                                                {{ $val.text }}
+                                            {{ end }}
+                                        {{ end }}
+                                    {{end}}
+                                {{ end}}
+                                </p>
+                            </div>
+                            {{ end }}
+                        {{end}}
+                    {{ end }}
+                {{end}}
+            {{ end }}
+        {{ end }}
+
+        {{ if eq $key "topic_id" }}
+            {{$topic_id = .}}
+        {{ end }}
+    {{end}}
+{{end}}
+{{ partial "discourse_comments.html" (dict "topicID" $topic_id)}}

@@ -1,0 +1,53 @@
+{{ define "main" }}
+{{ $t := debug.Timer "Distillery List" }}
+<article>
+    <div class="container mt-3">
+        <nav class="breadcrumb">
+            <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a class="main-link" itemprop="item" href="/"><span itemprop="name">Home</span></a>
+                    <meta itemprop="position" content="1">
+                </li>
+                <li class="breadcrumb-arrow">›</li>
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <p class="text-block"><span itemprop="name">Popular distilleries</span></p>
+                    <meta itemprop="position" content="2">
+                </li>
+            </ol>
+        </nav>
+    </div>
+
+    <div class="container mb-5 mt-5">
+        <h1 class="base-headline">Popular distilleries</h1>
+        <p class="text-block">This overview lists the most popular distilleries by number of reviews. A detailed and complete overview including filter and search capabilities is
+            available in the <a class="main-link" href={{ .Params.refs_dynamicLink }}>free RumX app</a>.</p>
+        <a class="intro-button-download-app-store" href="{{ .Site.Params.rumx.app_store_url }}"><img class="dl-image" src="/assets/images/download-app-store.webp" alt="Download app on app store"></a>
+        <a class="intro-button-download-google-play" href="{{ .Site.Params.rumx.google_play_url }}"><img class="dl-image" src="/assets/images/download-google-play.webp" alt="Download app on google play"></a>
+
+        <div class="row mt-5">
+            {{ $distillers := dict }}
+            {{ $all_distilleries := partialCached "cached_distilleries_with_db_id.html" . }}
+
+            {{range $distillerIndex, $distillery := $all_distilleries}}
+                {{if gt $distillerIndex 150}}
+                    {{break}}
+                {{end}}
+
+                {{ $ratingMedian := math.Div (float $distillery.ratingsMedian) 10.0 }}
+                <div class="card m-2" style="width: 18rem;">
+                    <div class="card-body">
+                        <h4 class="card-title mb-1">{{ $distillery.distillery }}</h4>
+                        <p class="text-muted mb-0">{{ lang.FormatNumberCustom 0 $distillery.rum_count | default 0 }} rums</p>
+                        <p class="card-text padding-top-xs mb-0">
+                            <b><span class="overall-rating-text">{{ printf "%.1f" $ratingMedian }}</span></b><span class="overall-rating-max">/</span><span class="overall-rating-max">10</span><span class="ms-3 overall-rating-max"><span>{{ $distillery.ratingsCount }}</span>
+                                reviews</span>
+                        </p>
+                    </div>
+                    <a href="{{ $distillery.url  }}" class="stretched-link"></a>
+                </div>
+            {{end}}
+        </div>
+    </div>
+</article>
+{{ $t.Stop}}
+{{ end }}

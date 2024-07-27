@@ -1,0 +1,97 @@
+{{ define "main" }}
+<article>
+    <div class="container mt-3">
+        <nav class="breadcrumb">
+            <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a class="main-link" itemprop="item" href="/"><span itemprop="name">Home</span></a>
+                    <meta itemprop="position" content="1">
+                </li>
+                <li class="breadcrumb-arrow">›</li>
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <p class="text-block"><span itemprop="name">{{ .Title }}</span></p>
+                    <meta itemprop="position" content="2">
+                </li>
+            </ol>
+        </nav>
+
+        <h1 class="mt-3">{{ .Title }}</h1>
+    </div>
+
+    <div class="container my-5">
+        <div class="row align-items-center mb-5 gy-5">
+            <div class="col-lg-6">
+                <div class="mx-auto double-device-wrapper pt-4">
+                    <img class="img-fluid double-iphone-device-screenshot" src="/assets/screenshots/b2c_marketplace.webp" alt="Screenshot of the integrated B2C marketplace" loading="lazy">
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <h2>Online shops</h2>
+                <p class="text-block">Do you run an online store for premium rums and want to be listed on the RumX website as well as in the RumX app? Then contact us and we will be happy to guide you through the steps for a successful integration. We look forward to hearing from you!</p>
+                <p class="text-block mb-0">As a store partner, the availability and prices of your offers are automatically integrated on a daily basis. Your offers will be displayed in:</p>
+                <ul>
+                    <li>each rum description page (app and website)</li>
+                    <li>the interactive Buyer's Guide (app)</li>
+                    <li>the search and recommendation lists (app)</li>
+                    <li>our integrated tasting feed (app)</li>
+                </ul>
+
+                <a class="btn btn-primary mt-2 me-2" href="mailto:{{ .Site.Params.email }}">Contact us</a>
+                <a class="btn btn-secondary mt-2" href="https://rumx-partners.web.app/">Login</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row align-items-center mb-5 gy-5">
+            <div class="col-lg-6">
+                <h2>Rum bloggers</h2>
+                <p class="text-block">Do you have a blog sharing your rum passion and tasting reviews? Then contact us and we will create an official blogger account in RumX for you. We are looking forward to you!</p>
+                <p class="text-block">With a blogger account, you can easily add your articles yourself in the app. Your articles will then be automatically linked to the RumX database and made available to the global rum community.</p>
+                <p class="text-block">Increase your reach and become a RumX blogger partner today!</p>
+
+                <div class="swiper bloggers-slider text-center mb-3">
+                    <div class="swiper-wrapper">
+                        {{ range  .Site.Data.bloggers }}
+                        <div class="swiper-slide">
+                            <a href="{{ .url }}"><img src="/assets/images/bloggers/{{ .img }}" alt="Logo of {{ .name }}" width="80" height="80"></a>
+                        </div>
+                        {{ end }}
+
+                    </div>
+                    <div class="swiper-button-next swiper-bloggers-button-next"></div>
+                </div>
+
+                <a class="btn btn-primary my-2" href="mailto:{{ .Site.Params.email }}">Contact us</a>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="mx-auto double-device-wrapper pt-4">
+                    <img class="img-fluid double-iphone-device-screenshot" src="/assets/screenshots/blog_partners.webp" alt="Screenshot of the integrated blog partner with expert reviews" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row align-items-center mb-5 gy-5">
+            <div class="col-lg-6">
+                <div class="mx-auto double-device-wrapper pt-4">
+                    <img class="img-fluid double-iphone-device-screenshot" src="/assets/screenshots/b2b_partnerships.webp" alt="Screenshot of the preorder of Steffen Mayers Caroni book and Distilia's Piracy collection" loading="lazy">
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <h2>Producers and brands</h2>
+                <p class="text-block">Are you responsible for a distillery or rum brand? RumX enables you to directly address a specific target group with distinct taste preferences. In the past, we have already implemented successful campaigns with exclusive pre-orders and product placements.</p>
+                <p class="text-block mb-0">We look forward to hearing from you to discuss possible forms of collaboration.</p>
+                <a class="btn btn-primary my-2" href="mailto:{{ .Site.Params.email }}">Contact us</a>
+            </div>
+        </div>
+    </div>
+
+</article>
+
+<script src="/assets/scripts/business.js"></script>
+{{ end }}

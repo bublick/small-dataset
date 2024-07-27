@@ -1,0 +1,47 @@
+{{ $rums := split (.Get "lineup_ids") "|"}}
+{{ $chart := .Get "chart" }}
+{{ $show_top_comment := .Get "show_top_comment"}}
+
+{{ $ratings_median := 0}}
+{{if ne (.Get "ratings_median") nil}}
+    {{ $ratings_median = split (.Get "ratings_median") "|"}}
+{{else}}
+    {{ $ratings_median = nil}}
+{{end}}
+
+{{ $ratings_count := 0}}
+{{if ne (.Get "ratings_count") nil}}
+    {{ $ratings_count = split (.Get "ratings_count") "|"}}
+{{else}}
+    {{ $ratings_count = nil}}
+{{end}}
+
+
+{{if ne $show_top_comment true}}
+    {{ $show_top_comment = false }}
+{{end}}
+
+{{range $index, $rum := $rums}}
+    {{$rum := .}}
+    {{ $rumPage := site.GetPage (printf "/rums/RX%s" $rum) }}
+
+    {{ $curr_rating_median := 0 }}
+    {{ $curr_rating_count := 0 }}
+
+    {{ if $ratings_median }}
+        {{ $curr_rating_median = index $ratings_median $index }}
+    {{ end }}
+
+    {{ if $ratings_count }}
+        {{ $curr_rating_count = index $ratings_count $index }}
+    {{ end }}
+
+
+    {{ with $rumPage}}
+        {{ if $chart}}
+            {{partial "rum_item.html" (dict "rum" . "show_top_comment" $show_top_comment "chart_position" (add $index 1) "el_median_rating" $curr_rating_median "el_rating_count" $curr_rating_count ) }}
+        {{ else}}
+            {{partial "rum_item.html" (dict "rum" . "show_top_comment" $show_top_comment) "el_median_rating" $curr_rating_median "el_rating_count" $curr_rating_count }}
+        {{ end}}
+    {{ end}}
+{{end}}
