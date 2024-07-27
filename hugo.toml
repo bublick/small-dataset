@@ -1,0 +1,45 @@
+baseURL = 'https://example.com'
+languageCode = 'en-us'
+title = 'Title'
+description = 'Description'
+
+
+timeout = "1800s"
+
+# Enable html in markdown
+[markup]
+  defaultMarkdownHandler = "goldmark"
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[params]
+  site_title = "So=ite"
+  site_home = "https://example.com"
+  copyright-year = '2023'
+  email = "mail@site.com"
+
+  rums = 222222
+  shop = 333333
+  distilleries = 444444
+  bottlers = 555555
+  
+    [params.rumx]
+    app_store_url = "https://apple-url.com"
+    google_play_url = "https://google-url.com"
+    offer_count = 39
+    top_rums_count = 14
+    maximum_tags_count = 6
+    distillery_or_bottler_preview_count = 8
+    show_all_rums_preview_count = 15
+    search_default_rums_count = 36
+    similar_rums_count = 11
+    community_reviews_preview_count = 3
+    community_reviews_extended_count = 15
+
+    [params.data.community_stats]
+    bottles = 318551
+
+[permalinks]
+  [permalinks.section]
+    distilleries = "/distilleries/:slugorfilename/"
