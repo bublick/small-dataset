@@ -219,21 +219,21 @@
       {{ $db_id := .Params.id_databaseRumID }}
       {{ $recommendationsIdLst := .Params.recommendations }}
 
-      <!-- { { range $recommendationsIndx, $recommendationsId := $recommendationsIdLst} }
-        { { range $rum_with_db_id := $rums_with_db_id } }
-          { { if and (eq $rum_with_db_id.id_databaseRumID $recommendationsId) (ge $recommendationsIndx $.Site.Params.rumx.similar_rums_count) } }
-            { { $similar_rum := dict "rxid" $rum_with_db_id.rxid 
+      {{ range $recommendationsIndx, $recommendationsId := $recommendationsIdLst}}
+        {{ range $rum_with_db_id := $rums_with_db_id }}
+          {{ if and (eq $rum_with_db_id.id_databaseRumID $recommendationsId) (ge $recommendationsIndx $.Site.Params.rumx.similar_rums_count) }}
+            {{ $similar_rum := dict "rxid" $rum_with_db_id.rxid 
                               "title" $rum_with_db_id.title 
                               "ratingsCount" $rum_with_db_id.ratingsCount 
                               "ratingsMedian" $rum_with_db_id.ratingsMedian 
                               "rum_count" $rum_with_db_id.rum_count 
                               "url" $rum_with_db_id.url 
                               "refs_imageURLs" $rum_with_db_id.refs_imageURLs
-            } }
-            { { $similar_rums = merge $similar_rums (dict (string (len $similar_rums)) $similar_rum) } }
-          { { end } }
-        { { end } }
-      { { end } } -->
+            }}
+            {{ $similar_rums = merge $similar_rums (dict (string (len $similar_rums)) $similar_rum) }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
 
       {{ $all_bottles := 0 }}
       {{ $closed_bottles := 0 }}
